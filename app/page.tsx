@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -11,36 +11,36 @@ type Work = {
 };
 
 const works: Work[] = [
-  { id: 1, title: "教程｜意式单螺纹 管状收针（准备针）", category: "手作日记", image: "./works/01.webp", note: "愿意把会的东西分享出去，也是一种温柔。" },
-  { id: 2, title: "围巾｜小繁花三角巾", category: "围巾", image: "./works/02.webp", note: "一小片繁花，被妥帖地留在颈间。" },
-  { id: 3, title: "小物｜手帐收纳袋", category: "小物", image: "./works/03.webp", note: "连零碎的日常，也值得被认真安放。" },
-  { id: 4, title: "小物｜杯垫", category: "小物", image: "./works/04.webp", note: "小小一件，也有被认真对待的光。" },
-  { id: 5, title: "毛衣｜Sophie’s cardigan", category: "衣物", image: "./works/05.webp", note: "把长久的耐心，织成可以穿在身上的温柔。" },
-  { id: 6, title: "围巾｜不完全柏林围巾", category: "围巾", image: "./works/06.webp", note: "不完全也很好，它有只属于你的节奏。" },
-  { id: 7, title: "2025｜年度报告", category: "手作日记", image: "./works/07.webp", note: "原来一年真的可以被织成看得见的样子。" },
-  { id: 8, title: "帽子｜钻石帽子 💎", category: "帽子", image: "./works/08.webp", note: "细节闪闪发亮，俏皮得刚刚好。" },
-  { id: 9, title: "披肩｜小繁花披肩", category: "披肩", image: "./works/09.webp", note: "像把一整片花期，安静地披在肩上。" },
-  { id: 10, title: "披肩｜繁花披肩", category: "披肩", image: "./works/10.webp", note: "花会谢，但你织出的这一季不会。" },
-  { id: 11, title: "披肩｜踏脚石披肩", category: "披肩", image: "./works/11.webp", note: "一针接着一针，就是抵达喜欢的方式。" },
-  { id: 12, title: "披肩｜云蛟披肩", category: "披肩", image: "./works/12.webp", note: "柔软里也藏着很有力量的纹路。" },
-  { id: 13, title: "毛线店 💕", category: "手作日记", image: "./works/13.webp", note: "看到喜欢的线，就像提前遇见下一件作品。" },
-  { id: 14, title: "披肩｜安仁披肩", category: "披肩", image: "./works/14.webp", note: "安静、松弛，又有自己的分寸。" },
-  { id: 15, title: "围巾｜lace scarf 完工", category: "围巾", image: "./works/15.webp", note: "完成的那一刻，耐心终于有了形状。" },
-  { id: 16, title: "围巾｜lace scarf", category: "围巾", image: "./works/16.webp", note: "还在路上的作品，也一样值得记录。" },
-  { id: 17, title: "围巾｜伊莉斯小围巾", category: "围巾", image: "./works/17.webp", note: "给普通的一天，加一点轻盈的仪式感。" },
-  { id: 18, title: "毛衣｜华夫套衫", category: "衣物", image: "./works/18.webp", note: "每一格纹理，都收好了一点时间。" },
-  { id: 19, title: "围巾｜三角小围巾", category: "围巾", image: "./works/19.webp", note: "小小的暖意，刚好够拥抱日常。" },
-  { id: 20, title: "2024｜年度报告", category: "手作日记", image: "./works/20.webp", note: "回头看，走过的路已经开满了作品。" },
-  { id: 21, title: "披肩｜close to you", category: "披肩", image: "./works/21.webp", note: "就像名字一样，是一份靠近时才懂的柔软。" },
-  { id: 22, title: "袜子｜平平针 基础款", category: "小物", image: "./works/22.webp", note: "最基础的针法，也能织出踏实的喜欢。" },
-  { id: 23, title: "pony 棒针", category: "手作日记", image: "./works/23.webp", note: "好用的工具，是手作人悄悄珍惜的伙伴。" },
-  { id: 24, title: "背心｜白色山脉", category: "衣物", image: "./works/24.webp", note: "清澈的白色里，藏着起伏的山脉。" },
-  { id: 25, title: "哇～新线～", category: "手作日记", image: "./works/25.webp", note: "对新线的开心，是下一次创造的序章。" },
-  { id: 26, title: "背心｜白色山脉背心", category: "衣物", image: "./works/26.webp", note: "柔软也可以有清晰、坚定的轮廓。" },
-  { id: 27, title: "围巾｜misha and puff zig zag scarf", category: "围巾", image: "./works/27.webp", note: "跳跃的纹路，把好心情也织了进去。" },
-  { id: 28, title: "芭贝毛线背心｜再来一件！", category: "衣物", image: "./works/28.webp", note: "真正喜欢的事，当然值得再来一次。" },
-  { id: 29, title: "背心｜横田古着背心", category: "衣物", image: "./works/29.webp", note: "旧时光的味道，被新的双手轻轻接住。" },
-  { id: 30, title: "帽子｜三国万里子帽子", category: "帽子", image: "./works/30.webp", note: "一顶帽子，也能有鲜明可爱的性格。" },
+  { id: 1, title: "教程｜意式单螺纹 管状收针（准备针）", category: "手作日记", image: "./works/01.webp", note: "技能点 +1：意式收针已解锁。" },
+  { id: 2, title: "围巾｜小繁花三角巾", category: "围巾", image: "./works/02.webp", note: "小繁花围巾，轻装出门时的可爱加成。" },
+  { id: 3, title: "小物｜手帐收纳袋", category: "小物", image: "./works/03.webp", note: "手账装备栏扩容成功。" },
+  { id: 4, title: "小物｜杯垫", category: "小物", image: "./works/04.webp", note: "杯垫虽小，配色绝不随便。" },
+  { id: 5, title: "毛衣｜Sophie’s cardigan", category: "衣物", image: "./works/05.webp", note: "今日穿搭主角已就位。" },
+  { id: 6, title: "围巾｜不完全柏林围巾", category: "围巾", image: "./works/06.webp", note: "“不完全”才有玩家自定义的味道。" },
+  { id: 7, title: "2025｜年度报告", category: "手作日记", image: "./works/07.webp", note: "2025 存档：今年也认真玩了毛线。" },
+  { id: 8, title: "帽子｜钻石帽子 💎", category: "帽子", image: "./works/08.webp", note: "钻石纹理，闪亮属性 +8。" },
+  { id: 9, title: "披肩｜小繁花披肩", category: "披肩", image: "./works/09.webp", note: "披肩展开，繁花地图加载完成。" },
+  { id: 10, title: "披肩｜繁花披肩", category: "披肩", image: "./works/10.webp", note: "这件属于一看就想放大细节的类型。" },
+  { id: 11, title: "披肩｜踏脚石披肩", category: "披肩", image: "./works/11.webp", note: "一针一格，稳稳推进任务进度。" },
+  { id: 12, title: "披肩｜云蛟披肩", category: "披肩", image: "./works/12.webp", note: "云蛟登场，气场和柔软同时在线。" },
+  { id: 13, title: "毛线店 💕", category: "手作日记", image: "./works/13.webp", note: "新地图：毛线店。快乐值直接拉满。" },
+  { id: 14, title: "披肩｜安仁披肩", category: "披肩", image: "./works/14.webp", note: "低饱和配色，耐看属性很高。" },
+  { id: 15, title: "围巾｜lace scarf 完工", category: "围巾", image: "./works/15.webp", note: "完工！成就徽章已点亮。" },
+  { id: 16, title: "围巾｜lace scarf", category: "围巾", image: "./works/16.webp", note: "制作中的过程照也是珍贵存档。" },
+  { id: 17, title: "围巾｜伊莉斯小围巾", category: "围巾", image: "./works/17.webp", note: "轻便小围巾，日常搭配万能道具。" },
+  { id: 18, title: "毛衣｜华夫套衫", category: "衣物", image: "./works/18.webp", note: "华夫纹理密集，细节党狂喜。" },
+  { id: 19, title: "围巾｜三角小围巾", category: "围巾", image: "./works/19.webp", note: "小三角围巾，轻量但很能打。" },
+  { id: 20, title: "2024｜年度报告", category: "手作日记", image: "./works/20.webp", note: "2024 存档：手作支线越开越多。" },
+  { id: 21, title: "披肩｜close to you", category: "披肩", image: "./works/21.webp", note: "名字很温柔，成品很有存在感。" },
+  { id: 22, title: "袜子｜平平针 基础款", category: "小物", image: "./works/22.webp", note: "基础款袜子，实用技能点满。" },
+  { id: 23, title: "pony 棒针", category: "手作日记", image: "./works/23.webp", note: "好工具到手，开工速度 +20%。" },
+  { id: 24, title: "背心｜白色山脉", category: "衣物", image: "./works/24.webp", note: "白色山脉，清爽系主角装备。" },
+  { id: 25, title: "哇～新线～", category: "手作日记", image: "./works/25.webp", note: "新线登场！ENFP 快乐小狗已上线。" },
+  { id: 26, title: "背心｜白色山脉背心", category: "衣物", image: "./works/26.webp", note: "同系列再刷一次，属于真爱副本。" },
+  { id: 27, title: "围巾｜misha and puff zig zag scarf", category: "围巾", image: "./works/27.webp", note: "锯齿纹像二次元片尾的节奏条。" },
+  { id: 28, title: "芭贝毛线背心｜再来一件！", category: "衣物", image: "./works/28.webp", note: "“再来一件”就是最高级的好评。" },
+  { id: 29, title: "背心｜横田古着背心", category: "衣物", image: "./works/29.webp", note: "古着感背心，复古属性加载成功。" },
+  { id: 30, title: "帽子｜三国万里子帽子", category: "帽子", image: "./works/30.webp", note: "帽子完成，角色造型度 +19。" },
 ];
 
 const filters = ["全部", "披肩", "围巾", "衣物", "帽子", "小物", "手作日记"] as const;
@@ -92,12 +92,12 @@ export default function Home() {
       <nav className="topbar" aria-label="作品集导航">
         <a className="brand" href="#top" aria-label="回到首页">
           <span className="brand-mark">针</span>
-          <span>米开朗骑骡 · 手作档案</span>
+          <span>米开朗骑骡 · 手作冒险日志</span>
         </a>
         <div className="nav-links">
-          <a href="#collection">作品</a>
-          <a href="#wish">今日手作签</a>
-          <button className="letter-link" onClick={() => setLetterOpen(true)}>给你的话</button>
+          <a href="#collection">作品图鉴</a>
+          <a href="#wish">今日扭蛋</a>
+          <button className="letter-link" onClick={() => setLetterOpen(true)}>好友留言</button>
         </div>
       </nav>
 
@@ -105,44 +105,45 @@ export default function Home() {
         <div className="knit-orbit orbit-one" aria-hidden="true" />
         <div className="knit-orbit orbit-two" aria-hidden="true" />
         <div className="hero-copy">
-          <p className="eyebrow">A SMALL ARCHIVE OF HANDMADE WARMTH</p>
-          <h1>把时间，<br /><em>织成温柔。</em></h1>
+          <div className="hero-stickers" aria-label="兴趣标签"><span>ENFP</span><span>快乐小狗</span><span>二次元浓度 ↑</span><span>手账选手</span></div>
+          <p className="eyebrow">ENFP HANDMADE PLAYER · SAVE DATA 01</p>
+          <h1>手作玩家的<br /><em>冒险日志。</em></h1>
           <p className="hero-intro">
-            给米开朗骑骡：你认真对待每一针，<br />我也想认真收藏每一份闪光。
+            给我的 ENFP 快乐小狗朋友：<br />你的毛线宇宙，值得建一个专属存档。
           </p>
           <div className="hero-actions">
-            <a className="primary-button" href="#collection">开始翻阅 <span>↓</span></a>
-            <button className="quiet-button" onClick={() => setLetterOpen(true)}>先读一封信</button>
+            <a className="primary-button" href="#collection">打开作品图鉴 <span>↓</span></a>
+            <button className="quiet-button" onClick={() => setLetterOpen(true)}>查看好友留言</button>
           </div>
         </div>
         <div className="hero-portrait" aria-label="创作者档案">
           <div className="portrait-frame">
             <img src="./avatar.webp" alt="米开朗骑骡的小红书头像" />
-            <div className="stitched-corner">made<br />with care</div>
+            <div className="stitched-corner">SAVE<br />DATA</div>
           </div>
           <div className="portrait-caption">
             <span className="caption-number">01 — 30</span>
-            <p>30 个公开手作片段<br />和数不清的耐心</p>
+            <p>Lv.30 手作玩家<br />今日灵感值 99%</p>
           </div>
         </div>
-        <div className="scroll-note" aria-hidden="true"><span />慢慢往下看</div>
+        <div className="scroll-note" aria-hidden="true"><span />继续冒险</div>
       </header>
 
       <section className="manifesto" aria-label="作品集序言">
-        <p className="section-kicker">写在前面</p>
+        <p className="section-kicker">建站理由 · VERY SIMPLE</p>
         <blockquote>
-          “编织很像把看不见的时间，<br />变成一件可以触摸的东西。”
+          “朋友圈放不下 30 张图，<br />所以干脆做了一个网站。”
         </blockquote>
         <p className="manifesto-note">
-          这里没有销量和排名，只有每一次起针、拆线、重来与完成。<br />我想让这些散落在日常里的作品，有一个可以随时回来的地方。
+          无煽情、无隐藏剧情，纯粹因为她真的很会织。<br />顺便把二次元、手账和快乐小狗能量一起装进来。
         </p>
       </section>
 
       <section className="collection" id="collection">
         <div className="collection-heading">
           <div>
-            <p className="section-kicker">作品档案 · THE COLLECTION</p>
-            <h2>一针一线，<br />都有自己的故事。</h2>
+            <p className="section-kicker">作品图鉴 · COMPLETE COLLECTION</p>
+            <h2>已解锁作品，<br />请随意翻牌。</h2>
           </div>
           <div className="collection-meta">
             <strong>{String(visibleWorks.length).padStart(2, "0")}</strong>
@@ -168,7 +169,7 @@ export default function Home() {
             <article className={`work-card card-shift-${index % 3}`} key={work.id}>
               <button className="image-button" onClick={() => setSelected(work)} aria-label={`查看${work.title}`}>
                 <img src={work.image} alt={work.title} loading="lazy" />
-                <span className="view-cue">轻触细看</span>
+                <span className="view-cue">点击放大</span>
               </button>
               <div className="work-info">
                 <div>
@@ -192,15 +193,15 @@ export default function Home() {
 
       <section className="wish-section" id="wish">
         <div className="wish-copy">
-          <p className="section-kicker light">今天，线团想对你说</p>
-          <h2>抽一张<br />手作签。</h2>
-          <p>每一次点开，都是从你的作品里随机挑出的一句小小鼓励。</p>
-          <button className="draw-button" onClick={drawWish}>轻轻抽一张 <span>✦</span></button>
+          <p className="section-kicker light">今日扭蛋机 · LUCKY DRAW</p>
+          <h2>抽一张<br />状态卡。</h2>
+          <p>随机掉落一件作品和一句今日状态，抽到哪张都算 SSR。</p>
+          <button className="draw-button" onClick={drawWish}>启动扭蛋 <span>✦</span></button>
         </div>
         <div className={`wish-card ${wish ? "revealed" : ""}`} aria-live="polite">
           {wish ? (
             <>
-              <span className="wish-label">TODAY&apos;S WARM NOTE</span>
+              <span className="wish-label">TODAY&apos;S HANDMADE SSR</span>
               <img src={wish.image} alt="" />
               <p>{wish.note}</p>
               <button onClick={() => setSelected(wish)}>看看这件作品 →</button>
@@ -208,7 +209,7 @@ export default function Home() {
           ) : (
             <>
               <div className="yarn-ball" aria-hidden="true"><span /></div>
-              <p className="wish-placeholder">有一句话<br />正在一团毛线里等你</p>
+              <p className="wish-placeholder">一张 SSR<br />正在毛线团里待机</p>
             </>
           )}
         </div>
@@ -218,20 +219,21 @@ export default function Home() {
         <img src="./works/24.webp" alt="白色山脉背心作品细节" loading="lazy" />
         <div className="care-note">
           <span className="tape" aria-hidden="true" />
-          <p className="handwritten">To 米开朗骑骡</p>
-          <h2>愿你一直做<br />让自己开心的事。</h2>
-          <p>
-            不必赶，不必和谁比较。你喜欢的颜色、你反复琢磨的针法、
-            你完成时那一点小小的得意，都很值得。
-          </p>
-          <button onClick={() => setLetterOpen(true)}>打开完整的信 <span>→</span></button>
+          <p className="handwritten">FRIEND OBSERVATION LOG</p>
+          <h2>ENFP 快乐小狗型<br />手作玩家鉴定完毕。</h2>
+          <div className="player-traits">
+            <span>脑洞启动快</span><span>看到新线会开心</span>
+            <span>手账装备齐全</span><span>开新坑行动力 MAX</span>
+          </div>
+          <p>结论：快乐值很高，作品也很能打。来自男性好友的认真整理，不含隐藏剧情。</p>
+          <button onClick={() => setLetterOpen(true)}>查看好友留言 <span>→</span></button>
         </div>
       </section>
 
       <footer>
         <div>
-          <p className="footer-title">米开朗骑骡 · 手作档案</p>
-          <p>把喜欢的事，慢慢做很久。</p>
+          <p className="footer-title">米开朗骑骡 · 手作冒险日志</p>
+          <p>毛线、手账、番剧，快乐支线全部开启。</p>
         </div>
         <div className="footer-right">
           <a href="https://www.xiaohongshu.com/user/profile/617cb389000000000201ea5b" target="_blank" rel="noreferrer">回到她的小红书主页 ↗</a>
@@ -251,24 +253,24 @@ export default function Home() {
               <button className={`keep-large ${favorites.includes(selected.id) ? "kept" : ""}`} onClick={() => toggleFavorite(selected.id)}>
                 {favorites.includes(selected.id) ? "♥ 已替你珍藏" : "♡ 替你珍藏这一件"}
               </button>
-              <small>键盘 ← → 可以继续翻阅</small>
+              <small>键盘 ← → 可以继续刷图鉴</small>
             </div>
           </div>
         </div>
       )}
 
       {letterOpen && (
-        <div className="letter-overlay" role="dialog" aria-modal="true" aria-label="给米开朗骑骡的一封信" onClick={() => setLetterOpen(false)}>
+        <div className="letter-overlay" role="dialog" aria-modal="true" aria-label="给米开朗骑骡的好友留言" onClick={() => setLetterOpen(false)}>
           <button className="close-button dark" onClick={() => setLetterOpen(false)} aria-label="关闭信件">×</button>
           <article className="letter-paper" onClick={(event) => event.stopPropagation()}>
-            <span className="letter-date">写给认真生活的你</span>
-            <h2>亲爱的米开朗骑骡：</h2>
-            <p>我做这个小网站，不是想把你的作品变得多么“正式”，而是想告诉你：那些被你一针一线认真完成的小东西，也值得被认真收藏。</p>
-            <p>我很喜欢看你做自己喜欢的事。看一团线慢慢有了形状，看你把耐心藏进纹理里，也看见你在一次次完成中，成为更自在、更闪亮的自己。</p>
-            <p>谢谢你让我知道，时间原来可以被织成柔软的样子。希望以后，你仍然可以不慌不忙地做很多喜欢的作品；而我也很幸运，能一直看见、一直为你鼓掌。</p>
-            <p className="letter-end">愿你的生活永远有线可织，有梦可做，<br />也一直有人珍惜你的认真。</p>
-            <div className="signature">— 一个把你的作品放在心上的朋友</div>
-            <button className="fold-letter" onClick={() => setLetterOpen(false)}>把信轻轻收好</button>
+            <span className="letter-date">好友留言 · 无煽情版</span>
+            <h2>嗨，米开朗骑骡：</h2>
+            <p>做这个网站的原因很简单：你的作品已经多到可以开图鉴，而且每一件都挺好看。用网页存档，比在聊天框里连发 30 张图酷一点。</p>
+            <p>我把这里做成了二次元手账风，也塞进了一点 ENFP 快乐小狗设定。筛选、收藏、放大查看和随机扭蛋都安排上了，主打一个好玩、好翻、随时能看。</p>
+            <p>以后有新作品就继续更新这个存档。祝你永远有新线可买、有灵感可记、追番不踩雷、手账不爆本，开多少新坑都能快乐收尾。</p>
+            <p className="letter-end">总之，继续开心做喜欢的东西。<br />下一张作品卡，随时等你解锁。</p>
+            <div className="signature">— 你的男性好友 / 本站临时管理员</div>
+            <button className="fold-letter" onClick={() => setLetterOpen(false)}>关闭留言，继续刷图鉴</button>
           </article>
         </div>
       )}

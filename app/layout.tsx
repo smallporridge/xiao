@@ -1,22 +1,22 @@
-﻿import type { Metadata, Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const title = "米开朗骑骡 · 手作档案";
-const description = "一份收藏 30 件编织作品与温柔心意的个人礼物。";
+const title = "米开朗骑骡 · 手作冒险日志";
+const description = "ENFP 快乐小狗型手作玩家的二次元手账风作品图鉴，收录 30 件编织作品。";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://smallporridge.github.io/xiao/"),
   title,
   description,
   applicationName: title,
-  authors: [{ name: "一个把她的作品放在心上的朋友" }],
+  authors: [{ name: "一位负责整理图鉴的男性好友" }],
   openGraph: {
     title,
     description,
     type: "website",
     url: "https://smallporridge.github.io/xiao/",
     siteName: title,
-    images: [{ url: "https://smallporridge.github.io/xiao/og.png", width: 1728, height: 896, alt: "把时间，织成温柔。米开朗骑骡手作档案" }],
+    images: [{ url: "https://smallporridge.github.io/xiao/og.png", width: 1728, height: 896, alt: "手作冒险日志：米开朗骑骡作品图鉴" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#681d3b",
+  themeColor: "#6678ef",
   colorScheme: "light",
 };
 
