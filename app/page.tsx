@@ -21,74 +21,56 @@ const spreads:Spread[]=[
 
 function WorkCard({item,index}:{item:Entry;index:number}){
 return <article className={`work-card card-${index}`}>
-<span className="tape" aria-hidden="true"/>
-<div className="photo"><img src={item.image} alt={item.title}/></div>
-<div className="work-meta"><span>{item.date}</span><span>{item.kind}</span></div>
-<h3>{item.title}</h3>
-<p>{item.caption}</p>
-{item.sticker&&<b className="word-sticker">{item.sticker}</b>}
-</article>;
+<span className="tape" aria-hidden="true"/><div className="photo"><img src={item.image} alt={item.title}/></div>
+<div className="work-meta"><span>{item.date}</span><span>{item.kind}</span></div><h3>{item.title}</h3><p>{item.caption}</p>
+{item.sticker&&<b className="word-sticker">{item.sticker}</b>}</article>;
 }
 
 function JournalPageView({page,side,index,year,color}:{page:JournalPage;side:"left"|"right";index:number;year:string;color:string}){
-if(page.kind==="recap")return <section className="journal-page recap-page side-left">
-<div className="page-no">{String(index*2+1).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>{year}</div>
-<p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2><p className="page-aside">{page.aside}</p>
-<div className="stamp-cloud" aria-hidden="true">{[30,22,15,8,5,2].map((id,i)=><span key={id} style={{transform:`rotate(${[-7,5,-3,8,-5,4][i]}deg)`}}><img src={`./works/${String(id).padStart(2,"0")}.webp`} alt=""/></span>)}</div>
-<div className="recap-copy"><b>我的毛线宇宙配方</b><p>一点大胆配色　＋　一点二次元脑洞<br/>＋　很多很多耐心　＋　永远不嫌多的可爱</p></div>
-</section>;
-if(page.kind==="letter")return <section className="journal-page letter-page side-right">
-<div className="page-no">{String(index*2+2).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>FOR YOU ♡</div>
-<p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2>
-<div className="letter-paper"><span>给你：</span><p>愿你以后还会遇到很多喜欢的线，也一直有突然冒出来的好点子。</p><p>想拆就拆，想重来就重来；慢一点没关系，做得开心最重要。</p><p>也愿你一直保留这种本事——把普通的日子，认真变得可爱一点。</p><p>下一件作品完成时，记得回来给这本手帐加一页。</p><b>—— 一个一直认真围观你作品的朋友</b></div>
-<div className="letter-doodle" aria-hidden="true">🐾　✦　♡　毛线万岁！</div>
-</section>;
-return <section className={`journal-page side-${side} page-layout-${page.layout}`}>
-<div className="page-no">{String(index*2+(side==="right"?2:1)).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>{year}</div>
-<p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2><p className="page-aside">{page.aside}</p>
-<div className="work-layout">{page.items.map((item,i)=><WorkCard key={item.id} item={item} index={i}/>)}</div>
-<span className="page-doodle" aria-hidden="true">{side==="left"?"♡₊˚ えらい！":"✦ できた！ ˚₊"}</span>
-</section>;
+if(page.kind==="recap")return <section className="journal-page recap-page side-left"><div className="page-no">{String(index*2+1).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>{year}</div><p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2><p className="page-aside">{page.aside}</p><div className="stamp-cloud" aria-hidden="true">{[30,22,15,8,5,2].map((id,i)=><span key={id} style={{transform:`rotate(${[-7,5,-3,8,-5,4][i]}deg)`}}><img src={`./works/${String(id).padStart(2,"0")}.webp`} alt=""/></span>)}</div><div className="recap-copy"><b>我的毛线宇宙配方</b><p>一点大胆配色　＋　一点二次元脑洞<br/>＋　很多很多耐心　＋　永远不嫌多的可爱</p></div></section>;
+if(page.kind==="letter")return <section className="journal-page letter-page side-right"><div className="page-no">{String(index*2+2).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>FOR YOU ♡</div><p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2><div className="letter-paper"><span>给你：</span><p>愿你以后还会遇到很多喜欢的线，也一直有突然冒出来的好点子。</p><p>想拆就拆，想重来就重来；慢一点没关系，做得开心最重要。</p><p>也愿你一直保留这种本事——把普通的日子，认真变得可爱一点。</p><p>下一件作品完成时，记得回来给这本手帐加一页。</p><b>—— 一个一直认真围观你作品的朋友</b></div><div className="letter-doodle" aria-hidden="true">🐾　✦　♡　毛线万岁！</div></section>;
+return <section className={`journal-page side-${side} page-layout-${page.layout}`}><div className="page-no">{String(index*2+(side==="right"?2:1)).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>{year}</div><p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2><p className="page-aside">{page.aside}</p><div className="work-layout">{page.items.map((item,i)=><WorkCard key={item.id} item={item} index={i}/>)}</div><span className="page-doodle" aria-hidden="true">{side==="left"?"♡₊˚ えらい！":"✦ できた！ ˚₊"}</span></section>;
 }
 
 function SpreadView({spread,index,className,style}:{spread:Spread;index:number;className?:string;style?:React.CSSProperties}){
-return <article className={`open-spread ${className??""}`} style={style}>
-<JournalPageView page={spread.left} side="left" index={index} year={spread.year} color={spread.color}/>
-<JournalPageView page={spread.right} side="right" index={index} year={spread.year} color={spread.color}/>
-</article>;
+return <article className={`open-spread ${className??""}`} style={style}><JournalPageView page={spread.left} side="left" index={index} year={spread.year} color={spread.color}/><JournalPageView page={spread.right} side="right" index={index} year={spread.year} color={spread.color}/></article>;
+}
+
+function OpeningBook({state,onOpen}:{state:"closed"|"opening";onOpen:()=>void}){
+return <section className={`book-object ${state}`} aria-label="合拢的毛线手帐">
+<div className="opening-pages"><SpreadView spread={spreads[0]} index={0}/></div>
+<button className="front-cover" onClick={onOpen} disabled={state==="opening"} aria-label="翻开毛线手帐">
+<div className="cover-face cover-front"><span className="cover-seam"/><div className="mini-photos" aria-hidden="true"><i><img src="./works/30.webp" alt=""/></i><i><img src="./works/08.webp" alt=""/></i><i><img src="./works/02.webp" alt=""/></i></div><div className="small-label">わたしの HANDMADE JOURNAL</div><h1>我的毛线<br/><em>搞怪手帐</em></h1><p>23件作品<br/>把快乐一针一线收进来</p><b className="open-label">从页脚轻轻翻开　↗</b><span className="cover-badge">ENFP<br/>快乐小狗</span></div>
+<div className="cover-face cover-back"><div className="inside-pocket"><b>HELLO!</b><p>这本手帐里，住着毛线、脑洞，还有很多次“再织一行就睡”。</p><span>请慢慢翻　♡</span></div></div>
+</button>
+</section>;
 }
 
 export default function Home(){
-const [opened,setOpened]=useState(false),[current,setCurrent]=useState(0),[drag,setDrag]=useState(0);
-const [dragDir,setDragDir]=useState<"next"|"prev"|null>(null),[settling,setSettling]=useState(false);
-const startX=useRef<number|null>(null),bookRef=useRef<HTMLDivElement|null>(null),rafRef=useRef<number|null>(null);
-const pendingDrag=useRef(0),lastX=useRef(0),lastTime=useRef(0),velocity=useRef(0);
+const [bookState,setBookState]=useState<"closed"|"opening"|"open">("closed");
+const [current,setCurrent]=useState(0),[drag,setDrag]=useState(0),[dragDir,setDragDir]=useState<"next"|"prev"|null>(null),[settling,setSettling]=useState(false);
+const startX=useRef<number|null>(null),bookRef=useRef<HTMLDivElement|null>(null),rafRef=useRef<number|null>(null),pendingDrag=useRef(0),lastX=useRef(0),lastTime=useRef(0),velocity=useRef(0);
 const target=dragDir==="next"?Math.min(current+1,spreads.length-1):dragDir==="prev"?Math.max(current-1,0):current;
-const finishTurn=(dir:"next"|"prev")=>{const next=dir==="next"?current+1:current-1;if(next<0||next>=spreads.length){setDrag(0);setDragDir(null);return}setSettling(true);requestAnimationFrame(()=>setDrag(1));window.setTimeout(()=>{setCurrent(next);setSettling(false);setDrag(0);setDragDir(null)},500)};
+const openBook=()=>{if(bookState!=="closed")return;setBookState("opening");window.setTimeout(()=>setBookState("open"),1120)};
+const finishTurn=(dir:"next"|"prev")=>{const next=dir==="next"?current+1:current-1;if(next<0||next>=spreads.length){setDrag(0);setDragDir(null);return}setSettling(true);requestAnimationFrame(()=>setDrag(1));window.setTimeout(()=>{setCurrent(next);setSettling(false);setDrag(0);setDragDir(null)},560)};
 const animateTurn=(dir:"next"|"prev")=>{if(settling||(dir==="next"&&current===spreads.length-1)||(dir==="prev"&&current===0))return;setDragDir(dir);setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>finishTurn(dir)))};
-useEffect(()=>{const onKey=(event:KeyboardEvent)=>{if(!opened)return;if(event.key==="ArrowRight")animateTurn("next");if(event.key==="ArrowLeft")animateTurn("prev")};addEventListener("keydown",onKey);return()=>{removeEventListener("keydown",onKey);if(rafRef.current!==null)cancelAnimationFrame(rafRef.current)}});
+useEffect(()=>{const onKey=(event:KeyboardEvent)=>{if(bookState!=="open")return;if(event.key==="ArrowRight")animateTurn("next");if(event.key==="ArrowLeft")animateTurn("prev")};addEventListener("keydown",onKey);return()=>{removeEventListener("keydown",onKey);if(rafRef.current!==null)cancelAnimationFrame(rafRef.current)}});
 const pointerDown=(event:React.PointerEvent)=>{if(settling)return;startX.current=event.clientX;lastX.current=event.clientX;lastTime.current=performance.now();velocity.current=0;pendingDrag.current=0;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)};
-const pointerMove=(event:React.PointerEvent)=>{if(startX.current===null||!bookRef.current||settling)return;const now=performance.now(),dx=event.clientX-startX.current;if(Math.abs(dx)<4)return;const dir=dx<0?"next":"prev";if((dir==="next"&&current===spreads.length-1)||(dir==="prev"&&current===0))return;velocity.current=(event.clientX-lastX.current)/Math.max(1,now-lastTime.current);lastX.current=event.clientX;lastTime.current=now;pendingDrag.current=Math.min(Math.abs(dx)/(bookRef.current.clientWidth*.44),.99);setDragDir(dir);if(rafRef.current===null)rafRef.current=requestAnimationFrame(()=>{setDrag(pendingDrag.current);rafRef.current=null})};
-const pointerUp=()=>{if(startX.current===null)return;startX.current=null;const fast=Math.abs(velocity.current)>.4;if(dragDir&&(pendingDrag.current>.12||fast))finishTurn(dragDir);else{setSettling(true);setDrag(0);window.setTimeout(()=>{setSettling(false);setDragDir(null)},260)}};
-const jump=(index:number)=>{if(index===current||settling)return;const dir=index>current?"next":"prev";setDragDir(dir);setSettling(true);setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>setDrag(1)));window.setTimeout(()=>{setCurrent(index);setDrag(0);setDragDir(null);setSettling(false)},500)};
-const currentStyle:React.CSSProperties={opacity:1-drag*.42,transform:`translate3d(${dragDir==="next"?-drag*1.8:drag*1.8}%,0,0) scale(${1-drag*.005})`};
-const leafStyle:React.CSSProperties={transform:`rotateY(${dragDir==="next"?-drag*178:drag*178}deg)`,opacity:dragDir?1:0};
-return <main className="scrapbook">
-{!opened?<section className="full-cover">
-<div className="cover-stitch"/><div className="cover-grid"/>
-<div className="cover-photos" aria-hidden="true"><figure><img src="./works/30.webp" alt=""/></figure><figure><img src="./works/08.webp" alt=""/></figure><figure><img src="./works/02.webp" alt=""/></figure></div>
-<div className="cover-copy"><span>わたしの HANDMADE JOURNAL</span><h1>我的毛线<br/><em>搞怪手帐</em></h1><p>把毛线、脑洞和一点点不服输，<br/>全都夹进这本书里。</p><button onClick={()=>setOpened(true)}>翻开看看 <b>→</b></button></div>
-<div className="cover-stickers" aria-hidden="true"><i>ENFP<br/>快乐小狗</i><i>别催<br/>在织了</i><i>♡</i><i>毛线部</i></div>
-</section>:<section className="reader"><div className={`book-shell ${settling?"is-settling":""}`} ref={bookRef} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
-{dragDir&&target!==current&&<SpreadView spread={spreads[target]} index={target} className="target-spread"/>}
-<SpreadView spread={spreads[current]} index={current} className="active-spread" style={currentStyle}/>
-<div className={`turning-leaf leaf-${dragDir??"next"}`} style={leafStyle}/><div className="book-spine"/>
-<button className="cover-tab" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>setOpened(false)}>封面 ↩</button>
-<div className="spread-count">{String(current+1).padStart(2,"0")} / {String(spreads.length).padStart(2,"0")}</div>
-<button className="page-edge edge-left" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("prev")} disabled={current===0} aria-label="上一跨页"><i>←</i></button>
-<button className="page-edge edge-right" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("next")} disabled={current===spreads.length-1} aria-label="下一跨页"><i>→</i></button>
-<nav className="thread-nav" aria-label="手账页码">{spreads.map((spread,index)=><button key={index} className={index===current?"active":""} onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>jump(index)} aria-label={`第${index+1}跨页`} style={{"--thread":spread.color} as React.CSSProperties}/>)}</nav>
-<span className="swipe-note">按住纸页拖动 · 手机左右划</span>
+const pointerMove=(event:React.PointerEvent)=>{if(startX.current===null||!bookRef.current||settling)return;const now=performance.now(),dx=event.clientX-startX.current;if(Math.abs(dx)<4)return;const dir=dx<0?"next":"prev";if((dir==="next"&&current===spreads.length-1)||(dir==="prev"&&current===0))return;velocity.current=(event.clientX-lastX.current)/Math.max(1,now-lastTime.current);lastX.current=event.clientX;lastTime.current=now;pendingDrag.current=Math.min(Math.abs(dx)/(bookRef.current.clientWidth*.43),.995);setDragDir(dir);if(rafRef.current===null)rafRef.current=requestAnimationFrame(()=>{setDrag(pendingDrag.current);rafRef.current=null})};
+const pointerUp=()=>{if(startX.current===null)return;startX.current=null;const fast=Math.abs(velocity.current)>.38;if(dragDir&&(pendingDrag.current>.11||fast))finishTurn(dragDir);else{setSettling(true);setDrag(0);window.setTimeout(()=>{setSettling(false);setDragDir(null)},300)}};
+const jump=(index:number)=>{if(index===current||settling)return;const dir=index>current?"next":"prev";setDragDir(dir);setSettling(true);setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>setDrag(1)));window.setTimeout(()=>{setCurrent(index);setDrag(0);setDragDir(null);setSettling(false)},560)};
+const angle=(dragDir==="next"?-1:1)*drag*179,curve=Math.sin(drag*Math.PI),shadowSide=dragDir==="next"?-1:1;
+const leafStyle:React.CSSProperties={transform:`perspective(1900px) rotateY(${angle}deg) rotateZ(${shadowSide*curve*.55}deg)`,boxShadow:`${shadowSide*curve*24}px ${8+curve*12}px ${18+curve*28}px rgba(51,34,42,${.16+curve*.25})`,borderRadius:dragDir==="next"?`2px ${4+curve*24}px ${7+curve*35}px 2px`:`${4+curve*24}px 2px 2px ${7+curve*35}px`};
+const frontPage=dragDir==="next"?spreads[current].right:spreads[current].left,backPage=dragDir==="next"?spreads[target].left:spreads[target].right;
+const frontSide=dragDir==="next"?"right":"left",backSide=dragDir==="next"?"left":"right";
+return <main className={`desk book-${bookState}`}>
+<div className="desk-stickers" aria-hidden="true"><i>✦</i><i>♡</i><i>毛线部</i><i>わくわく</i><i>🐾</i></div>
+{bookState!=="open"?<OpeningBook state={bookState} onOpen={openBook}/>:<section className="reader"><div className={`book-shell ${settling?"is-settling":""} ${dragDir?`turn-${dragDir}`:""}`} ref={bookRef} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
+{dragDir&&target!==current&&<SpreadView spread={spreads[target]} index={target} className="target-spread"/>}<SpreadView spread={spreads[current]} index={current} className="active-spread"/>
+{dragDir&&target!==current&&<div className={`turning-leaf leaf-${dragDir}`} style={leafStyle} aria-hidden="true"><div className="leaf-face leaf-front"><JournalPageView page={frontPage} side={frontSide} index={current} year={spreads[current].year} color={spreads[current].color}/></div><div className="leaf-face leaf-back"><JournalPageView page={backPage} side={backSide} index={target} year={spreads[target].year} color={spreads[target].color}/></div><span className="paper-curl"/></div>}
+<div className="book-spine"/><button className="cover-tab" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>{setBookState("closed");setCurrent(0)}}>合上 ↩</button><div className="spread-count">{String(current+1).padStart(2,"0")} / {String(spreads.length).padStart(2,"0")}</div>
+<button className="page-edge edge-left" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("prev")} disabled={current===0} aria-label="上一跨页"><i>←</i></button><button className="page-edge edge-right" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("next")} disabled={current===spreads.length-1} aria-label="下一跨页"><i>→</i></button>
+<nav className="thread-nav" aria-label="手账页码">{spreads.map((spread,index)=><button key={index} className={index===current?"active":""} onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>jump(index)} aria-label={`第${index+1}跨页`} style={{"--thread":spread.color} as React.CSSProperties}/>)}</nav><span className="swipe-note">抓住页脚拖动 · 手机左右划</span>
 </div></section>}
 </main>;
 }
