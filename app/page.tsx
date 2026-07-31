@@ -19,6 +19,11 @@ const spreads:Spread[]=[
 {year:"未完待续 · 17",color:"#f4aec4",left:{eyebrow:"TO BE CONTINUED",title:"原来，我已经织了这么远",aside:"23件作品，不是清单，是我一点点变厉害、也一直没弄丢可爱的证据。",layout:"duo",kind:"recap",items:[]},right:{eyebrow:"这一页，由朋友来写",title:"给未来还会继续织东西的你",aside:"",layout:"hero",kind:"letter",items:[]}}
 ];
 
+const mobilePages=spreads.flatMap((spread,spreadIndex)=>([
+{page:spread.left,side:"left" as const,spreadIndex,year:spread.year,color:spread.color},
+{page:spread.right,side:"right" as const,spreadIndex,year:spread.year,color:spread.color}
+]));
+
 function WorkCard({item,index}:{item:Entry;index:number}){
 return <article className={`work-card card-${index}`}>
 <span className="tape" aria-hidden="true"/><div className="photo"><img src={item.image} alt={item.title}/></div>
@@ -36,9 +41,13 @@ function SpreadView({spread,index,className,style}:{spread:Spread;index:number;c
 return <article className={`open-spread ${className??""}`} style={style}><JournalPageView page={spread.left} side="left" index={index} year={spread.year} color={spread.color}/><JournalPageView page={spread.right} side="right" index={index} year={spread.year} color={spread.color}/></article>;
 }
 
-function OpeningBook({state,onOpen}:{state:"closed"|"opening";onOpen:()=>void}){
-return <section className={`book-object ${state}`} aria-label="合拢的毛线手帐">
-<div className="opening-pages"><SpreadView spread={spreads[0]} index={0}/></div>
+function MobilePageView({pageIndex,className}:{pageIndex:number;className?:string}){
+const item=mobilePages[pageIndex];
+return <article className={`mobile-page-stack ${className??""}`}><JournalPageView page={item.page} side={item.side} index={item.spreadIndex} year={item.year} color={item.color}/></article>;
+}
+function OpeningBook({state,onOpen,isMobile}:{state:"closed"|"opening";onOpen:()=>void;isMobile:boolean}){
+return <section className={`book-object ${state} ${isMobile?"mobile-opening":""}`} aria-label="合拢的毛线手帐">
+<div className="opening-pages">{isMobile?<MobilePageView pageIndex={0}/>:<SpreadView spread={spreads[0]} index={0}/>}</div>
 <button className="front-cover" onClick={onOpen} disabled={state==="opening"} aria-label="翻开毛线手帐">
 <div className="cover-face cover-front"><span className="cover-seam"/><div className="mini-photos" aria-hidden="true"><i><img src="./works/30.webp" alt=""/></i><i><img src="./works/08.webp" alt=""/></i><i><img src="./works/02.webp" alt=""/></i></div><div className="small-label">わたしの HANDMADE JOURNAL</div><h1>我的毛线<br/><em>搞怪手帐</em></h1><p>23件作品<br/>把快乐一针一线收进来</p><b className="open-label">从页脚轻轻翻开　↗</b><span className="cover-badge">ENFP<br/>快乐小狗</span></div>
 <div className="cover-face cover-back"><div className="inside-pocket"><b>HELLO!</b><p>这本手帐里，住着毛线、脑洞，还有很多次“再织一行就睡”。</p><span>请慢慢翻　♡</span></div></div>
@@ -48,29 +57,42 @@ return <section className={`book-object ${state}`} aria-label="合拢的毛线�
 
 export default function Home(){
 const [bookState,setBookState]=useState<"closed"|"opening"|"open">("closed");
+const [isMobile,setIsMobile]=useState(false);
 const [current,setCurrent]=useState(0),[drag,setDrag]=useState(0),[dragDir,setDragDir]=useState<"next"|"prev"|null>(null),[settling,setSettling]=useState(false);
-const startX=useRef<number|null>(null),bookRef=useRef<HTMLDivElement|null>(null),rafRef=useRef<number|null>(null),pendingDrag=useRef(0),lastX=useRef(0),lastTime=useRef(0),velocity=useRef(0);
-const target=dragDir==="next"?Math.min(current+1,spreads.length-1):dragDir==="prev"?Math.max(current-1,0):current;
+const startPos=useRef<number|null>(null),bookRef=useRef<HTMLDivElement|null>(null),rafRef=useRef<number|null>(null),pendingDrag=useRef(0),lastPos=useRef(0),lastTime=useRef(0),velocity=useRef(0),modeRef=useRef(false);
+const total=isMobile?mobilePages.length:spreads.length;
+const target=dragDir==="next"?Math.min(current+1,total-1):dragDir==="prev"?Math.max(current-1,0):current;
 const openBook=()=>{if(bookState!=="closed")return;setBookState("opening");window.setTimeout(()=>setBookState("open"),1120)};
-const finishTurn=(dir:"next"|"prev")=>{const next=dir==="next"?current+1:current-1;if(next<0||next>=spreads.length){setDrag(0);setDragDir(null);return}setSettling(true);requestAnimationFrame(()=>setDrag(1));window.setTimeout(()=>{setCurrent(next);setSettling(false);setDrag(0);setDragDir(null)},560)};
-const animateTurn=(dir:"next"|"prev")=>{if(settling||(dir==="next"&&current===spreads.length-1)||(dir==="prev"&&current===0))return;setDragDir(dir);setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>finishTurn(dir)))};
-useEffect(()=>{const onKey=(event:KeyboardEvent)=>{if(bookState!=="open")return;if(event.key==="ArrowRight")animateTurn("next");if(event.key==="ArrowLeft")animateTurn("prev")};addEventListener("keydown",onKey);return()=>{removeEventListener("keydown",onKey);if(rafRef.current!==null)cancelAnimationFrame(rafRef.current)}});
-const pointerDown=(event:React.PointerEvent)=>{if(settling)return;startX.current=event.clientX;lastX.current=event.clientX;lastTime.current=performance.now();velocity.current=0;pendingDrag.current=0;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)};
-const pointerMove=(event:React.PointerEvent)=>{if(startX.current===null||!bookRef.current||settling)return;const now=performance.now(),dx=event.clientX-startX.current;if(Math.abs(dx)<4)return;const dir=dx<0?"next":"prev";if((dir==="next"&&current===spreads.length-1)||(dir==="prev"&&current===0))return;velocity.current=(event.clientX-lastX.current)/Math.max(1,now-lastTime.current);lastX.current=event.clientX;lastTime.current=now;pendingDrag.current=Math.min(Math.abs(dx)/(bookRef.current.clientWidth*.43),.995);setDragDir(dir);if(rafRef.current===null)rafRef.current=requestAnimationFrame(()=>{setDrag(pendingDrag.current);rafRef.current=null})};
-const pointerUp=()=>{if(startX.current===null)return;startX.current=null;const fast=Math.abs(velocity.current)>.38;if(dragDir&&(pendingDrag.current>.11||fast))finishTurn(dragDir);else{setSettling(true);setDrag(0);window.setTimeout(()=>{setSettling(false);setDragDir(null)},300)}};
+const finishTurn=(dir:"next"|"prev")=>{const next=dir==="next"?current+1:current-1;if(next<0||next>=total){setDrag(0);setDragDir(null);return}setSettling(true);requestAnimationFrame(()=>setDrag(1));window.setTimeout(()=>{setCurrent(next);setSettling(false);setDrag(0);setDragDir(null)},560)};
+const animateTurn=(dir:"next"|"prev")=>{if(settling||(dir==="next"&&current===total-1)||(dir==="prev"&&current===0))return;setDragDir(dir);setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>finishTurn(dir)))};
+useEffect(()=>{const query=matchMedia("(max-width: 760px)");const sync=()=>{const next=query.matches;if(next===modeRef.current)return;setCurrent(index=>next?Math.min(index*2,mobilePages.length-1):Math.floor(index/2));modeRef.current=next;setIsMobile(next);setDrag(0);setDragDir(null)};sync();query.addEventListener("change",sync);return()=>query.removeEventListener("change",sync)},[]);
+useEffect(()=>{const onKey=(event:KeyboardEvent)=>{if(bookState!=="open")return;if(isMobile){if(event.key==="ArrowUp")animateTurn("next");if(event.key==="ArrowDown")animateTurn("prev")}else{if(event.key==="ArrowRight")animateTurn("next");if(event.key==="ArrowLeft")animateTurn("prev")}};addEventListener("keydown",onKey);return()=>{removeEventListener("keydown",onKey);if(rafRef.current!==null)cancelAnimationFrame(rafRef.current)}});
+useEffect(()=>{if(bookState!=="open")return;let frame=0;const elements=(page:Element)=>Array.from(page.querySelectorAll<HTMLElement>(".work-card p,.work-card h3,.letter-paper,.recap-copy"));const overflowing=(page:HTMLElement)=>page.scrollHeight>page.clientHeight+1||page.scrollWidth>page.clientWidth+1||elements(page).some(el=>el.scrollHeight>el.clientHeight+1||el.scrollWidth>el.clientWidth+1);const fit=()=>{document.querySelectorAll<HTMLElement>(".journal-page").forEach(page=>{page.classList.remove("fit-tight","fit-tighter");if(overflowing(page))page.classList.add("fit-tight");if(overflowing(page))page.classList.add("fit-tighter")})};frame=requestAnimationFrame(()=>requestAnimationFrame(fit));const observer=new ResizeObserver(()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(fit)});if(bookRef.current)observer.observe(bookRef.current);addEventListener("resize",fit);return()=>{cancelAnimationFrame(frame);observer.disconnect();removeEventListener("resize",fit)}},[bookState,current,dragDir,isMobile]);
+const point=(event:React.PointerEvent)=>isMobile?event.clientY:event.clientX;
+const pointerDown=(event:React.PointerEvent)=>{if(settling)return;const value=point(event);startPos.current=value;lastPos.current=value;lastTime.current=performance.now();velocity.current=0;pendingDrag.current=0;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)};
+const pointerMove=(event:React.PointerEvent)=>{if(startPos.current===null||!bookRef.current||settling)return;const now=performance.now(),value=point(event),delta=value-startPos.current;if(Math.abs(delta)<4)return;const dir=delta<0?"next":"prev";if((dir==="next"&&current===total-1)||(dir==="prev"&&current===0))return;velocity.current=(value-lastPos.current)/Math.max(1,now-lastTime.current);lastPos.current=value;lastTime.current=now;const distance=isMobile?bookRef.current.clientHeight:bookRef.current.clientWidth;pendingDrag.current=Math.min(Math.abs(delta)/(distance*(isMobile?.32:.43)),.995);setDragDir(dir);if(rafRef.current===null)rafRef.current=requestAnimationFrame(()=>{setDrag(pendingDrag.current);rafRef.current=null})};
+const pointerUp=()=>{if(startPos.current===null)return;startPos.current=null;const fast=Math.abs(velocity.current)>.38;if(dragDir&&(pendingDrag.current>.11||fast))finishTurn(dragDir);else{setSettling(true);setDrag(0);window.setTimeout(()=>{setSettling(false);setDragDir(null)},300)}};
 const jump=(index:number)=>{if(index===current||settling)return;const dir=index>current?"next":"prev";setDragDir(dir);setSettling(true);setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>setDrag(1)));window.setTimeout(()=>{setCurrent(index);setDrag(0);setDragDir(null);setSettling(false)},560)};
-const angle=(dragDir==="next"?-1:1)*drag*179,curve=Math.sin(drag*Math.PI),shadowSide=dragDir==="next"?-1:1;
-const leafStyle:React.CSSProperties={transform:`perspective(1900px) rotateY(${angle}deg) rotateZ(${shadowSide*curve*.55}deg)`,boxShadow:`${shadowSide*curve*24}px ${8+curve*12}px ${18+curve*28}px rgba(51,34,42,${.16+curve*.25})`,borderRadius:dragDir==="next"?`2px ${4+curve*24}px ${7+curve*35}px 2px`:`${4+curve*24}px 2px 2px ${7+curve*35}px`};
-const frontPage=dragDir==="next"?spreads[current].right:spreads[current].left,backPage=dragDir==="next"?spreads[target].left:spreads[target].right;
-const frontSide=dragDir==="next"?"right":"left",backSide=dragDir==="next"?"left":"right";
+const curve=Math.sin(drag*Math.PI),shadowSide=dragDir==="next"?-1:1;
+const angle=isMobile?(dragDir==="next"?-drag*179:(1-drag)*179):(dragDir==="next"?-1:1)*drag*179;
+const leafStyle:React.CSSProperties=isMobile?{transform:`perspective(1900px) rotateX(${angle}deg) rotateZ(${shadowSide*curve*.28}deg)`,boxShadow:`0 ${shadowSide*curve*22}px ${18+curve*30}px rgba(51,34,42,${.17+curve*.24})`,borderRadius:dragDir==="next"?`3px 3px ${8+curve*34}px ${8+curve*34}px`:`${8+curve*34}px ${8+curve*34}px 3px 3px`}:{transform:`perspective(1900px) rotateY(${angle}deg) rotateZ(${shadowSide*curve*.55}deg)`,boxShadow:`${shadowSide*curve*24}px ${8+curve*12}px ${18+curve*28}px rgba(51,34,42,${.16+curve*.25})`,borderRadius:dragDir==="next"?`2px ${4+curve*24}px ${7+curve*35}px 2px`:`${4+curve*24}px 2px 2px ${7+curve*35}px`};
+const frontMobileIndex=dragDir==="prev"?target:current,backMobileIndex=dragDir==="prev"?current:target;
+const frontPage=isMobile?mobilePages[frontMobileIndex].page:dragDir==="next"?spreads[current].right:spreads[current].left;
+const backPage=isMobile?mobilePages[backMobileIndex].page:dragDir==="next"?spreads[target].left:spreads[target].right;
+const frontSide=isMobile?mobilePages[frontMobileIndex].side:dragDir==="next"?"right":"left";
+const backSide=isMobile?mobilePages[backMobileIndex].side:dragDir==="next"?"left":"right";
+const frontIndex=isMobile?mobilePages[frontMobileIndex].spreadIndex:current,backIndex=isMobile?mobilePages[backMobileIndex].spreadIndex:target;
+const frontYear=isMobile?mobilePages[frontMobileIndex].year:spreads[current].year,backYear=isMobile?mobilePages[backMobileIndex].year:spreads[target].year;
+const frontColor=isMobile?mobilePages[frontMobileIndex].color:spreads[current].color,backColor=isMobile?mobilePages[backMobileIndex].color:spreads[target].color;
+const navItems=isMobile?mobilePages:spreads;
 return <main className={`desk book-${bookState}`}>
-<div className="desk-stickers" aria-hidden="true"><i>✦</i><i>♡</i><i>毛线部</i><i>わくわく</i><i>🐾</i></div>
-{bookState!=="open"?<OpeningBook state={bookState} onOpen={openBook}/>:<section className="reader"><div className={`book-shell ${settling?"is-settling":""} ${dragDir?`turn-${dragDir}`:""}`} ref={bookRef} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
-{dragDir&&target!==current&&<SpreadView spread={spreads[target]} index={target} className="target-spread"/>}<SpreadView spread={spreads[current]} index={current} className="active-spread"/>
-{dragDir&&target!==current&&<div className={`turning-leaf leaf-${dragDir}`} style={leafStyle} aria-hidden="true"><div className="leaf-face leaf-front"><JournalPageView page={frontPage} side={frontSide} index={current} year={spreads[current].year} color={spreads[current].color}/></div><div className="leaf-face leaf-back"><JournalPageView page={backPage} side={backSide} index={target} year={spreads[target].year} color={spreads[target].color}/></div><span className="paper-curl"/></div>}
-<div className="book-spine"/><button className="cover-tab" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>{setBookState("closed");setCurrent(0)}}>合上 ↩</button><div className="spread-count">{String(current+1).padStart(2,"0")} / {String(spreads.length).padStart(2,"0")}</div>
-<button className="page-edge edge-left" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("prev")} disabled={current===0} aria-label="上一跨页"><i>←</i></button><button className="page-edge edge-right" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("next")} disabled={current===spreads.length-1} aria-label="下一跨页"><i>→</i></button>
-<nav className="thread-nav" aria-label="手账页码">{spreads.map((spread,index)=><button key={index} className={index===current?"active":""} onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>jump(index)} aria-label={`第${index+1}跨页`} style={{"--thread":spread.color} as React.CSSProperties}/>)}</nav><span className="swipe-note">抓住页脚拖动 · 手机左右划</span>
+<div className="desk-stickers" aria-hidden="true"><i>✦</i><i>♡</i><i>毛线部</i><i>わくわく</i><i>🐥</i></div>
+{bookState!=="open"?<OpeningBook state={bookState} onOpen={openBook} isMobile={isMobile}/>:<section className="reader"><div className={`book-shell ${isMobile?"mobile-book-shell":""} ${settling?"is-settling":""} ${dragDir?`turn-${dragDir}`:""}`} ref={bookRef} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
+{dragDir&&target!==current&&(isMobile?<MobilePageView pageIndex={target} className="target-page"/>:<SpreadView spread={spreads[target]} index={target} className="target-spread"/>)}{isMobile?<MobilePageView pageIndex={current} className="active-page"/>:<SpreadView spread={spreads[current]} index={current} className="active-spread"/>}
+{dragDir&&target!==current&&<div className={`turning-leaf leaf-${dragDir}`} style={leafStyle} aria-hidden="true"><div className="leaf-face leaf-front"><JournalPageView page={frontPage} side={frontSide} index={frontIndex} year={frontYear} color={frontColor}/></div><div className="leaf-face leaf-back"><JournalPageView page={backPage} side={backSide} index={backIndex} year={backYear} color={backColor}/></div><span className="paper-curl"/></div>}
+<div className="book-spine"/><button className="cover-tab" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>{setBookState("closed");setCurrent(0)}}>合上 ↗</button><div className="spread-count">{String(current+1).padStart(2,"0")} / {String(total).padStart(2,"0")}</div>
+<button className="page-edge edge-left" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("prev")} disabled={current===0} aria-label="上一页"><i>{isMobile?"↓":"←"}</i></button><button className="page-edge edge-right" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("next")} disabled={current===total-1} aria-label="下一页"><i>{isMobile?"↑":"→"}</i></button>
+<nav className="thread-nav" aria-label="手帐页码">{navItems.map((item,index)=><button key={index} className={index===current?"active":""} onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>jump(index)} aria-label={`第${index+1}页`} style={{"--thread":item.color} as React.CSSProperties}/>)}</nav><span className="swipe-note">{isMobile?"向上翻下一页 · 向下翻上一页":"抓住页脚拖动 · 左右翻页"}</span>
 </div></section>}
 </main>;
 }
