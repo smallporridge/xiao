@@ -1,40 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const title = "米开朗骑骡 · 手作冒险日志";
-const description = "ENFP 快乐小狗型手作玩家的二次元手账风作品图鉴，收录 30 件编织作品。";
-
+const title = "织物 / 在场 · 米开朗骑骡纺织作品展";
+const description = "23 件完成纺织作品的电子展览。点开作品，看它如何被穿上、被使用、走进生活。";
 export const metadata: Metadata = {
   metadataBase: new URL("https://smallporridge.github.io/xiao/"),
-  title,
-  description,
-  applicationName: title,
-  authors: [{ name: "一位负责整理图鉴的男性好友" }],
-  openGraph: {
-    title,
-    description,
-    type: "website",
-    url: "https://smallporridge.github.io/xiao/",
-    siteName: title,
-    images: [{ url: "https://smallporridge.github.io/xiao/og.png", width: 1728, height: 896, alt: "手作冒险日志：米开朗骑骡作品图鉴" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: ["https://smallporridge.github.io/xiao/og.png"],
-  },
+  title, description, applicationName: title,
+  openGraph: { title, description, type: "website", url: "https://smallporridge.github.io/xiao/", siteName: title, images: [{ url: "https://smallporridge.github.io/xiao/og.png", width: 1728, height: 896, alt: "织物在场电子展览" }] },
+  twitter: { card: "summary_large_image", title, description, images: ["https://smallporridge.github.io/xiao/og.png"] },
 };
-
-export const viewport: Viewport = {
-  themeColor: "#6678ef",
-  colorScheme: "light",
-};
-
+export const viewport: Viewport = { themeColor: "#151515", colorScheme: "light dark" };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="zh-CN">
-      <body>{children}</body>
-    </html>
-  );
+  return <html lang="zh-CN"><body>{children}</body></html>;
 }
