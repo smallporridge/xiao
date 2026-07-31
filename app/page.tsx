@@ -1,163 +1,141 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-type Scene = "scarf" | "shawl" | "vest" | "hat" | "pouch" | "coaster" | "socks";
-type RoomKey = "shoulder" | "wear" | "outing" | "desk";
-type Work = {
-  id:number; title:string; kind:string; room:RoomKey; image:string; scene:Scene;
-  note:string; place:string; styling:string; moment:string;
-};
+type Scene="scarf"|"shawl"|"vest"|"hat"|"pouch"|"coaster"|"socks";
+type ChapterKey="begin"|"pattern"|"wear"|"life";
+type Work={id:number;title:string;kind:string;chapter:ChapterKey;image:string;scene:Scene;note:string;road:string;use:string};
 
-const works:Work[] = [
-  { id:2,title:"小繁花三角巾",kind:"围巾",room:"outing",image:"./works/02.webp",scene:"scarf",note:"小小一条，却很会替普通衣服加上一点轻快。",place:"风衣与针织外套的领口",styling:"让三角尖自然落在胸前，绕颈一圈即可。",moment:"降温后的散步、看展、通勤" },
-  { id:3,title:"手帐收纳袋",kind:"收纳",room:"desk",image:"./works/03.webp",scene:"pouch",note:"她把手帐的热闹，认真装进了一个自己织的小口袋。",place:"手帐桌与随身托特包",styling:"装常用笔、胶带和便签，变成一套可以带走的手帐工具。",moment:"咖啡店写手帐、旅行记录" },
-  { id:4,title:"杯垫",kind:"家居",room:"desk",image:"./works/04.webp",scene:"coaster",note:"不是宏大的作品，却会在每一次放下杯子时被用到。",place:"书桌、床头或下午茶托盘",styling:"给每天都会拿起的杯子一个柔软落点。",moment:"阅读、手帐、冬日热饮" },
-  { id:5,title:"Sophie’s Cardigan",kind:"开衫",room:"wear",image:"./works/05.webp",scene:"vest",note:"从织一件东西，到织出一整套可以穿走的心情。",place:"日常叠穿与换季外套",styling:"内搭纯色衬衫或薄高领，把针法纹理留给近看。",moment:"早秋通勤、周末逛店" },
-  { id:8,title:"钻石帽子",kind:"帽子",room:"outing",image:"./works/08.webp",scene:"hat",note:"纹理像一排被收好的小光点，戴上以后轮廓也变得有趣。",place:"冬日外套与耳机旁",styling:"把帽檐略向后推，让纹理成为轮廓。",moment:"散步、旅行、看雪" },
-  { id:9,title:"小繁花披肩",kind:"披肩",room:"shoulder",image:"./works/09.webp",scene:"shawl",note:"花纹第一次大面积展开，像一张柔软的地图。",place:"衬衫、连衣裙或沙发扶手",styling:"披在肩上，或折窄后当作大围巾。",moment:"空调房、晚餐、短途旅行" },
-  { id:10,title:"繁花披肩",kind:"披肩",room:"shoulder",image:"./works/10.webp",scene:"shawl",note:"当针脚重复得足够多，花纹就真的长成了风景。",place:"素色长裙与大衣之上",styling:"完整展开，让花纹成为整套造型的主角。",moment:"看展、聚会、秋日拍照" },
-  { id:11,title:"踏脚石披肩",kind:"披肩",room:"shoulder",image:"./works/11.webp",scene:"shawl",note:"一针接一针，看似缓慢，却会把很长的路走完。",place:"阅读椅、长途车厢与办公室",styling:"斜搭一侧肩膀，既保暖又保留轻松感。",moment:"阅读、通勤、旅行途中" },
-  { id:12,title:"云蛟披肩",kind:"披肩",room:"shoulder",image:"./works/12.webp",scene:"shawl",note:"名字、形状和纹理放在一起，已经像一件有设定的作品。",place:"极简黑白穿搭之上",styling:"用素色内搭托住它的结构和边缘。",moment:"秋冬约饭、展览开幕" },
-  { id:14,title:"安仁披肩",kind:"披肩",room:"shoulder",image:"./works/14.webp",scene:"shawl",note:"颜色很安静，细节却值得停下来多看一会儿。",place:"棉麻衬衫和自然色外套",styling:"贴近颈部绕一圈，余量从一侧垂下。",moment:"旅行、慢节奏周末" },
-  { id:15,title:"Lace Scarf",kind:"围巾",room:"shoulder",image:"./works/15.webp",scene:"scarf",note:"轻、透、细密，是毛线也可以拥有的另一种表情。",place:"简洁领口与轻薄风衣",styling:"不要过度缠绕，让蕾丝针法在光下展开。",moment:"春秋通勤、咖啡店" },
-  { id:17,title:"伊莉斯小围巾",kind:"围巾",room:"outing",image:"./works/17.webp",scene:"scarf",note:"小围巾像一句短句，篇幅不长，却能让造型完整。",place:"圆领针织衫与衬衫领口",styling:"像项链一样系在颈间，留下短短的尾端。",moment:"日常出门、朋友见面" },
-  { id:18,title:"华夫套衫",kind:"套衫",room:"wear",image:"./works/18.webp",scene:"vest",note:"密密的纹理让衣服看起来柔软，也让耐心变得可见。",place:"牛仔裤、半裙与宽松长裤",styling:"保持其余单品简洁，让华夫纹理成为重点。",moment:"入秋第一件毛衣、周末散步" },
-  { id:22,title:"基础款袜子",kind:"袜子",room:"outing",image:"./works/22.webp",scene:"socks",note:"所谓基础款，是把手作真正穿进每天。",place:"家中木地板与短靴里",styling:"让袜口露出一点，低调显示手作纹理。",moment:"居家、露营、冬日旅行" },
-  { id:24,title:"白色山脉",kind:"背心",room:"wear",image:"./works/24.webp",scene:"vest",note:"清楚的结构和安静的颜色，像一件可以反复穿很多年的作品。",place:"白衬衫、条纹衫与长裙之上",styling:"用同色系叠穿放大清爽的山脉感。",moment:"春秋通勤、周末看展" },
-  { id:27,title:"Zig Zag Scarf",kind:"围巾",room:"outing",image:"./works/27.webp",scene:"scarf",note:"锯齿边让一条围巾有了节奏，也多了一点二次元片尾感。",place:"纯色卫衣与短外套旁",styling:"绕一圈后把锯齿边完整露在正面。",moment:"街头散步、朋友聚会" },
-  { id:29,title:"横田古着背心",kind:"背心",room:"wear",image:"./works/29.webp",scene:"vest",note:"喜欢的旧时光没有被复制，而是被重新织了一遍。",place:"复古衬衫、灯芯绒和皮鞋",styling:"沿用旧电影般的低饱和配色。",moment:"秋日市集、唱片店、旅行" },
-  { id:30,title:"三国万里子帽子",kind:"帽子",room:"outing",image:"./works/30.webp",scene:"hat",note:"一件小作品，也可以拥有很完整的角色轮廓。",place:"羊毛大衣与围巾上方",styling:"保持整体色彩克制，让帽型成为焦点。",moment:"冬日通勤、城市散步" },
+const works:Work[]=[
+{id:2,title:"小繁花三角巾",kind:"围巾",chapter:"begin",image:"./works/02.webp",scene:"scarf",note:"小小一条，却很会替普通衣服加上一点轻快。",road:"从可以轻松戴上身的小件开始，手作第一次变成了随时能带走的配饰。",use:"绕在风衣或针织外套的领口，让三角尖自然落在胸前。"},
+{id:17,title:"伊莉斯小围巾",kind:"围巾",chapter:"begin",image:"./works/17.webp",scene:"scarf",note:"像一句短句，篇幅不长，却能让一身衣服完整。",road:"尺寸变得更轻，针脚也更克制；开始知道哪里应该丰富，哪里应该留白。",use:"像项链一样系在圆领针织衫或衬衫领口，留下短短的尾端。"},
+{id:8,title:"钻石帽子",kind:"帽子",chapter:"begin",image:"./works/08.webp",scene:"hat",note:"纹理像一排被收好的小光点，戴上以后轮廓也变得有趣。",road:"从平面的围巾走向立体的帽型，作品开始拥有清楚的角色轮廓。",use:"搭配冬日外套，把帽檐略向后推，让纹理完整露出来。"},
+{id:22,title:"基础款袜子",kind:"袜子",chapter:"begin",image:"./works/22.webp",scene:"socks",note:"所谓基础款，是把手作真正穿进每天。",road:"不是每件作品都要复杂。把基础针法做好，也是在为后面的远路打底。",use:"穿在家里或短靴中，让袜口露出一点手作纹理。"},
+{id:9,title:"小繁花披肩",kind:"披肩",chapter:"pattern",image:"./works/09.webp",scene:"shawl",note:"花纹第一次大面积展开，像一张柔软的地图。",road:"从小围巾来到整片披肩，重复的针脚终于拥有足够空间长成风景。",use:"披在衬衫或连衣裙上，也可以折窄后当作大围巾。"},
+{id:10,title:"繁花披肩",kind:"披肩",chapter:"pattern",image:"./works/10.webp",scene:"shawl",note:"当针脚重复得足够多，花纹就真的有了自己的季节。",road:"不再只是完成一个形状，而是开始控制节奏、留白和整件作品的气氛。",use:"在素色长裙或大衣上完整展开，让花纹成为主角。"},
+{id:11,title:"踏脚石披肩",kind:"披肩",chapter:"pattern",image:"./works/11.webp",scene:"shawl",note:"一针接一针，看似缓慢，却会把很长的路走完。",road:"复杂作品教会人的，也许正是把很大的目标拆成眼前这一针。",use:"斜搭一侧肩膀，陪着阅读、通勤或一段长途旅行。"},
+{id:12,title:"云蛟披肩",kind:"披肩",chapter:"pattern",image:"./works/12.webp",scene:"shawl",note:"名字、形状和纹理放在一起，已经像一件有设定的作品。",road:"这时的作品不只好看，还开始拥有名字、性格和自己的世界观。",use:"用极简黑白内搭托住它的结构，让边缘完整展开。"},
+{id:14,title:"安仁披肩",kind:"披肩",chapter:"pattern",image:"./works/14.webp",scene:"shawl",note:"颜色很安静，细节却值得停下来多看一会儿。",road:"不是每一次进步都要更热闹；有时是更懂得让颜色和针法彼此成全。",use:"贴近颈部绕一圈，搭配棉麻衬衫和自然色外套。"},
+{id:15,title:"Lace Scarf",kind:"围巾",chapter:"pattern",image:"./works/15.webp",scene:"scarf",note:"轻、透、细密，是毛线也可以拥有的另一种表情。",road:"在厚实之外试着变轻，让针脚和光一起参与作品。",use:"搭配轻薄风衣，不要过度缠绕，让蕾丝针法在光下展开。"},
+{id:5,title:"Sophie’s Cardigan",kind:"开衫",chapter:"wear",image:"./works/05.webp",scene:"vest",note:"从织一件东西，到织出一整套可以穿走的心情。",road:"作品开始覆盖身体，也意味着尺寸、结构和耐心都要一起升级。",use:"内搭纯色衬衫或薄高领，把针法纹理留给近看。"},
+{id:18,title:"华夫套衫",kind:"套衫",chapter:"wear",image:"./works/18.webp",scene:"vest",note:"密密的纹理让衣服看起来柔软，也让耐心变得可见。",road:"一件完整套衫，是许多小决定共同成立之后留下的答案。",use:"搭配牛仔裤或半裙，其余单品保持简洁，让华夫纹理成为重点。"},
+{id:24,title:"白色山脉",kind:"背心",chapter:"wear",image:"./works/24.webp",scene:"vest",note:"清楚的结构和安静的颜色，像一件可以反复穿很多年的作品。",road:"开始找到真正适合日常的平衡：有设计，但不会只适合照片。",use:"叠穿白衬衫、条纹衫或长裙，用同色系放大清爽感。"},
+{id:29,title:"横田古着背心",kind:"背心",chapter:"wear",image:"./works/29.webp",scene:"vest",note:"喜欢的旧时光没有被复制，而是被重新织了一遍。",road:"织法之外，作品的气质也越来越明确——知道自己喜欢什么，并把它做出来。",use:"搭配复古衬衫、灯芯绒和皮鞋，延续低饱和的旧电影感。"},
+{id:3,title:"手帐收纳袋",kind:"收纳",chapter:"life",image:"./works/03.webp",scene:"pouch",note:"她把手帐的热闹，认真装进了一个自己织的小口袋。",road:"两个喜欢的世界在这里碰面：写写画画的手帐，和一针一线的手作。",use:"装常用笔、胶带和便签，变成一套可以带去咖啡店的工具。"},
+{id:4,title:"杯垫",kind:"家居",chapter:"life",image:"./works/04.webp",scene:"coaster",note:"不是宏大的作品，却会在每一次放下杯子时被用到。",road:"创作不再只追求完成感，也开始自然地住进一天里最普通的时刻。",use:"放在书桌或床头，给热饮和阅读时间一个柔软落点。"},
+{id:27,title:"Zig Zag Scarf",kind:"围巾",chapter:"life",image:"./works/27.webp",scene:"scarf",note:"锯齿边让一条围巾有了节奏，也多了一点二次元片尾感。",road:"熟悉的围巾又有了新玩法。会重复喜欢的形状，也会给它新的性格。",use:"搭配纯色卫衣或短外套，把锯齿边完整留在正面。"},
+{id:30,title:"三国万里子帽子",kind:"帽子",chapter:"life",image:"./works/30.webp",scene:"hat",note:"一件小作品，也可以拥有很完整的角色设定。",road:"走到这里，小件、大件、穿搭和日常已经连成了一个很清楚的小宇宙。",use:"搭配羊毛大衣和围巾，让帽型成为冬日造型的最后一笔。"},
 ];
 
-const rooms:{key:RoomKey;number:string;title:string;en:string;intro:string}[] = [
-  {key:"shoulder",number:"ROOM 01",title:"肩上的风景",en:"LANDSCAPES TO WEAR",intro:"围巾和披肩，是她反复回到的形状。每一次换线、换针法，都像把同一片风景重新画一遍。"},
-  {key:"wear",number:"ROOM 02",title:"穿进日常",en:"MADE TO LIVE IN",intro:"当作品不再只被铺开拍照，而是可以真的穿出门，毛线便拥有了新的生活。"},
-  {key:"outing",number:"ROOM 03",title:"带出门的小宇宙",en:"SMALL THINGS, FAR AWAY",intro:"帽子、袜子和小围巾，都是不动声色的角色装备：轻巧，却能把今天变得不一样。"},
-  {key:"desk",number:"ROOM 04",title:"桌边收藏",en:"OBJECTS FOR EVERY DAY",intro:"手作不只负责好看。它也可以收好一支笔，接住一杯热饮，安静地加入每天。"},
+const chapters:{key:ChapterKey;title:string;subtitle:string;start:number;color:string}[]=[
+{key:"begin",title:"从小小一件开始",subtitle:"CHAPTER 01 · THE FIRST STITCHES",start:0,color:"#f2b8c6"},
+{key:"pattern",title:"花纹长成风景",subtitle:"CHAPTER 02 · PATTERNS BLOOM",start:4,color:"#a9c9ee"},
+{key:"wear",title:"把作品穿进日常",subtitle:"CHAPTER 03 · MADE TO WEAR",start:10,color:"#f3d77e"},
+{key:"life",title:"让喜欢住进生活",subtitle:"CHAPTER 04 · A HANDMADE LIFE",start:14,color:"#a9c6a0"},
 ];
 
-const sceneImages:Record<Scene,string> = {
-  scarf:"./scenes/scarf.webp",shawl:"./scenes/shawl.webp",vest:"./scenes/vest.webp",hat:"./scenes/hat.webp",
-  pouch:"./scenes/pouch.webp",coaster:"./scenes/coaster.webp",socks:"./scenes/socks.webp",
-};
+const scenes:Record<Scene,string>={scarf:"./scenes/scarf.webp",shawl:"./scenes/shawl.webp",vest:"./scenes/vest.webp",hat:"./scenes/hat.webp",pouch:"./scenes/pouch.webp",coaster:"./scenes/coaster.webp",socks:"./scenes/socks.webp"};
 
 export default function Home(){
-  const [selected,setSelected] = useState<Work|null>(null);
-  const [view,setView] = useState<"work"|"scene">("scene");
-  const [letterOpen,setLetterOpen] = useState(false);
+const [opened,setOpened]=useState(false);
+const [page,setPage]=useState(0);
+const [direction,setDirection]=useState<"next"|"prev">("next");
+const [view,setView]=useState<"work"|"scene">("work");
+const [contents,setContents]=useState(false);
+const [stars,setStars]=useState<number[]>([]);
+const touchStart=useRef<number|null>(null);
+const isFinal=page===works.length;
+const work=isFinal?null:works[page];
+const chapter=work?chapters.find(item=>item.key===work.chapter)!:null;
 
-  useEffect(()=>{
-    document.body.style.overflow = selected || letterOpen ? "hidden" : "";
-    return()=>{document.body.style.overflow=""};
-  },[selected,letterOpen]);
+useEffect(()=>{const saved=localStorage.getItem("xiao-book-stars");if(saved)setStars(JSON.parse(saved))},[]);
+useEffect(()=>{
+const onKey=(event:KeyboardEvent)=>{if(!opened)return;if(event.key==="ArrowRight")turn(1);if(event.key==="ArrowLeft")turn(-1);if(event.key==="Escape")setContents(false)};
+window.addEventListener("keydown",onKey);return()=>window.removeEventListener("keydown",onKey);
+});
+const go=(target:number)=>{
+const next=Math.max(0,Math.min(works.length,target));if(next===page)return;
+setDirection(next>page?"next":"prev");setPage(next);setView("work");setContents(false);
+};
+const turn=(delta:number)=>go(page+delta);
+const toggleStar=()=>{if(!work)return;const next=stars.includes(work.id)?stars.filter(id=>id!==work.id):[...stars,work.id];setStars(next);localStorage.setItem("xiao-book-stars",JSON.stringify(next))};
+const onTouchEnd=(event:React.TouchEvent)=>{if(touchStart.current===null)return;const distance=event.changedTouches[0].clientX-touchStart.current;if(Math.abs(distance)>55)turn(distance<0?1:-1);touchStart.current=null};
 
-  useEffect(()=>{
-    const onKey=(event:KeyboardEvent)=>{
-      if(event.key==="Escape"){setSelected(null);setLetterOpen(false)}
-      if(!selected || !["ArrowLeft","ArrowRight"].includes(event.key))return;
-      const current=works.findIndex(work=>work.id===selected.id);
-      setSelected(works[(current+(event.key==="ArrowRight"?1:-1)+works.length)%works.length]);
-      setView("scene");
-    };
-    window.addEventListener("keydown",onKey);
-    return()=>window.removeEventListener("keydown",onKey);
-  },[selected]);
+return <main className={"book-app "+(opened?"is-open":"is-closed")}>
+{!opened?<section className="cover" aria-label="手账封面">
+<div className="cover-paper">
+<div className="cover-thread" aria-hidden="true"><i/><i/><i/></div>
+<span className="tape tape-one"/><span className="tape tape-two"/>
+<div className="cover-stickers" aria-hidden="true"><b>✦</b><b>ENFP</b><b>🐾</b><b>毛线宇宙</b></div>
+<p>PRIVATE HANDMADE JOURNAL · 01</p>
+<h1><span>一针一线</span><em>织成你的小宇宙</em></h1>
+<blockquote>你随手发出的每一件作品，<br/>都有人认真看过、记住，并觉得珍贵。</blockquote>
+<button onClick={()=>setOpened(true)}>翻开第一页 <span>→</span></button>
+<small>18 WORKS · FOUR CHAPTERS · MADE FOR YOU</small>
+</div>
+</section>:
+<section className="reader">
+<header className="reader-top">
+<button className="contents-button" onClick={()=>setContents(true)}>☰ 目录</button>
+<div className="thread-progress"><span style={{width:((page+1)/(works.length+1)*100)+"%"}}/><i/></div>
+<span>{String(page+1).padStart(2,"0")} / {String(works.length+1).padStart(2,"0")}</span>
+</header>
 
-  const openWork=(work:Work)=>{setSelected(work);setView("scene")};
-  const move=(direction:number)=>{
-    if(!selected)return;
-    const current=works.findIndex(work=>work.id===selected.id);
-    setSelected(works[(current+direction+works.length)%works.length]);
-    setView("scene");
-  };
+<nav className="chapter-tabs" aria-label="章节书签">
+{chapters.map(item=><button key={item.key} style={{"--tab":item.color} as React.CSSProperties} className={chapter?.key===item.key?"active":""} onClick={()=>go(item.start)}><span>{item.title}</span></button>)}
+<button style={{"--tab":"#d7b4df"} as React.CSSProperties} className={isFinal?"active":""} onClick={()=>go(works.length)}><span>未完待续</span></button>
+</nav>
 
-  return <main id="top">
-    <nav className="site-nav">
-      <a href="#top" className="brand">一针一线 · 小宇宙</a>
-      <div><a href="#story">轨迹</a><a href="#rooms">作品</a><a href="#letter">留给以后</a></div>
-    </nav>
+<div className="desk-decoration" aria-hidden="true"><span>✿</span><span>☆</span><span>☁</span></div>
+<div className="book-stage" onTouchStart={event=>touchStart.current=event.touches[0].clientX} onTouchEnd={onTouchEnd}>
+<div className="book-shadow"/>
+<div className="book-spine"/>
+{work&&chapter?<article className={"spread turn-"+direction} key={work.id}>
+<section className="photo-page">
+<span className="washi"/><span className="paperclip">⌇</span>
+<div className="photo-frame"><img src={view==="work"?work.image:scenes[work.scene]} alt={view==="work"?work.title:work.title+"的应用场景灵感"}/></div>
+<div className="photo-caption"><span>{view==="work"?"原作照片":"AI 场景灵感 · 以原作为准"}</span><b>{work.kind}</b></div>
+<div className="view-toggle"><button className={view==="work"?"active":""} onClick={()=>setView("work")}>原作</button><button className={view==="scene"?"active":""} onClick={()=>setView("scene")}>看它上场</button></div>
+<span className="doodle doodle-left" aria-hidden="true">⋆｡°✩</span>
+</section>
+<section className="story-page">
+<div className="chapter-label" style={{background:chapter.color}}>{chapter.subtitle}</div>
+<span className="page-number">PAGE {String(page+1).padStart(2,"0")}</span>
+<h1>{work.title}</h1>
+<p className="note">“{work.note}”</p>
+<div className="memory-block"><small>这一步，留在了来时的路上</small><p>{work.road}</p></div>
+<div className="use-block"><small>让它去生活里</small><p>{work.use}</p></div>
+<button className={"star-button "+(stars.includes(work.id)?"starred":"")} onClick={toggleStar}>{stars.includes(work.id)?"★ 这一页已经贴了星星":"☆ 给这一页贴一颗星"}</button>
+<span className="doodle doodle-right" aria-hidden="true">♡</span>
+</section>
+</article>:<article className={"spread final-spread turn-"+direction} key="final">
+<section className="photo-page final-collage">
+<span className="washi"/><div className="mini-photo one"><img src="./works/02.webp" alt=""/></div><div className="mini-photo two"><img src="./works/10.webp" alt=""/></div><div className="mini-photo three"><img src="./works/03.webp" alt=""/></div><span className="final-sticker">TO BE<br/>CONTINUED!</span>
+</section>
+<section className="story-page final-page">
+<div className="chapter-label" style={{background:"#d7b4df"}}>THE NEXT CHAPTER</div><span className="page-number">PAGE 19</span>
+<h1>这本书，<br/>还没有写完。</h1>
+<p className="final-note">它只是一个小小的展示柜，保存已经织出来的可爱，也留出位置，等待以后的新作品。</p>
+<div className="future-lines"><p>19 / 下一次大胆配色</p><p>20 / 下一件舍不得送人的作品</p><p>21 / 尚未出现的神秘作品</p></div>
+<blockquote>这本书以后由你继续写。<br/>里面哪些作品留下、哪些换掉，都由你决定。</blockquote>
+<small className="signature">— 一位认真看过这些作品的朋友</small>
+</section>
+</article>}
+<div className="sparkles" key={"spark-"+page} aria-hidden="true"><i>✦</i><i>⋆</i><i>✧</i></div>
+</div>
 
-    <header className="hero">
-      <div className="thread" aria-hidden="true"><span/><i/></div>
-      <p className="hero-kicker">A HANDMADE UNIVERSE · 18 SELECTED WORKS</p>
-      <h1><span>一针一线</span><span>织成你的小宇宙</span></h1>
-      <p className="hero-copy">我把你散落在小红书里的作品，重新放在一起。<br/>想让你看看：原来你已经创造了这样一个完整的世界。</p>
-      <a className="enter" href="#story">开始参观 <b>↓</b></a>
-      <span className="hero-index">PRIVATE EXHIBITION / 2024—2026</span>
-    </header>
+<div className="reader-controls">
+<button onClick={()=>turn(-1)} disabled={page===0}>← 上一页</button>
+<span>{work?work.title:"未完待续"}</span>
+<button onClick={()=>turn(1)} disabled={isFinal}>下一页 →</button>
+</div>
+<p className="swipe-hint">手机左右轻扫，也可以翻页</p>
 
-    <section className="story" id="story">
-      <div className="section-title">
-        <p>CREATIVE ORBIT</p><h2>作品自己写下的轨迹</h2>
-        <span>没有编造日期，也没有替她说话。<br/>只把作品放在一起，看见它们真实的变化。</span>
-      </div>
-      <div className="story-track">
-        <article><span>01</span><img src="./works/02.webp" alt="小繁花三角巾"/><div><small>从小小一件开始</small><h3>先把喜欢，织成可以带走的形状。</h3></div></article>
-        <article><span>02</span><img src="./works/10.webp" alt="繁花披肩"/><div><small>花纹渐渐展开</small><h3>针脚多到一定程度，就变成了风景。</h3></div></article>
-        <article><span>03</span><img src="./works/18.webp" alt="华夫套衫"/><div><small>作品穿进日常</small><h3>不只完成，也开始真正陪人生活。</h3></div></article>
-        <article><span>04</span><img src="./works/03.webp" alt="手帐收纳袋"/><div><small>宇宙住到桌边</small><h3>连最普通的日常，也有了手作的位置。</h3></div></article>
-      </div>
-    </section>
-
-    <section className="rooms" id="rooms">
-      {rooms.map(room=><section className={"room room-"+room.key} key={room.key}>
-        <header className="room-head">
-          <div><span>{room.number} · {room.en}</span><h2>{room.title}</h2></div><p>{room.intro}</p>
-        </header>
-        <div className="room-grid">
-          {works.filter(work=>work.room===room.key).map((work,index)=><button className="work-card" key={work.id} onClick={()=>openWork(work)} aria-label={"查看 "+work.title+" 的故事和使用场景"}>
-            <span className="work-image"><img src={work.image} alt={work.title} loading="lazy"/></span>
-            <span className="work-label"><small>{String(works.indexOf(work)+1).padStart(2,"0")} / {work.kind}</small><strong>{work.title}</strong><em>{work.note}</em><b>看它走进生活 ↗</b></span>
-          </button>)}
-        </div>
-      </section>)}
-    </section>
-
-    <section className="dna">
-      <div className="dna-intro"><p>CREATIVE DNA</p><h2>她的编织宇宙配方</h2><span>来自这 18 件精选完成作品的真实分类。</span></div>
-      <div className="dna-bars">
-        <div><span style={{"--size":"50%"} as React.CSSProperties}/><strong>50%</strong><p>肩上的风景<small>围巾与披肩</small></p></div>
-        <div><span style={{"--size":"22%"} as React.CSSProperties}/><strong>22%</strong><p>穿进日常<small>开衫、套衫与背心</small></p></div>
-        <div><span style={{"--size":"17%"} as React.CSSProperties}/><strong>17%</strong><p>温暖配件<small>帽子与袜子</small></p></div>
-        <div><span style={{"--size":"11%"} as React.CSSProperties}/><strong>11%</strong><p>桌边小物<small>收纳与家居</small></p></div>
-      </div>
-      <div className="curator-picks">
-        <article><small>最想带出门</small><strong>小繁花三角巾</strong><span>轻巧、明亮，不需要特别的场合。</span></article>
-        <article><small>最像一幅画</small><strong>云蛟披肩</strong><span>名字和纹理都有自己的世界观。</span></article>
-        <article><small>最适合每天用</small><strong>手帐收纳袋</strong><span>兴趣和手作在同一件东西里相遇。</span></article>
-      </div>
-    </section>
-
-    <section className="eyes">
-      <p>FROM A FRIEND’S VIEW</p>
-      <h2>我记住的，不只是成品。</h2>
-      <div>
-        <p>我最先记住的是作品，放在一起以后，才看见你很清楚的偏爱：小围巾、大片的披肩、可以叠穿的背心，还有会加入手帐日常的小东西。</p>
-        <p>你会回到喜欢的形状里，换一种线、一个颜色或一种针法，再认真做一遍。它们不是零散的更新，而是一个逐渐清晰的小宇宙——柔软，但有自己的结构；可爱，也很耐看。</p>
-      </div>
-    </section>
-
-    <section className="future" id="letter">
-      <div className="future-copy"><p>TO BE CONTINUED</p><h2>这里先留一点空白，<br/>等下一件作品出现。</h2></div>
-      <div className="future-slots">
-        <div><span>19</span><p>下一次大胆配色</p></div><div><span>20</span><p>下一件舍不得送人的作品</p></div><div><span>21</span><p>尚未出现的神秘作品</p></div>
-      </div>
-      <button className="gift-button" onClick={()=>setLetterOpen(true)}><span>打开最后一只小盒子</span><b>＋</b></button>
-    </section>
-
-    <footer><span>Made with patience, imagination, and many tiny stitches.</span><a href="https://www.xiaohongshu.com/user/profile/617cb389000000000201ea5b" target="_blank" rel="noreferrer">她的小红书 ↗</a></footer>
-
-    {selected&&<div className="viewer" role="dialog" aria-modal="true" aria-label={selected.title+" 作品详情"}>
-      <div className="viewer-bar"><span>{String(works.findIndex(work=>work.id===selected.id)+1).padStart(2,"0")} / {works.length}</span><div className="view-switch"><button className={view==="work"?"active":""} onClick={()=>setView("work")}>原作</button><button className={view==="scene"?"active":""} onClick={()=>setView("scene")}>看它上场</button></div><button onClick={()=>setSelected(null)}>关闭 ×</button></div>
-      <div className="viewer-body">
-        <div className="viewer-visual"><img src={view==="work"?selected.image:sceneImages[selected.scene]} alt={view==="work"?selected.title:selected.title+" 的应用场景灵感"}/><span>{view==="work"?"ORIGINAL / 原作照片":"IN USE / AI 场景灵感 · 以原作为准"}</span></div>
-        <aside className="viewer-note"><span>{selected.kind} · WORK {selected.id}</span><h2>{selected.title}</h2><blockquote>{selected.note}</blockquote><dl><div><dt>适合出现</dt><dd>{selected.place}</dd></div><div><dt>使用方式</dt><dd>{selected.styling}</dd></div><div><dt>属于它的时刻</dt><dd>{selected.moment}</dd></div></dl><div className="viewer-nav"><button onClick={()=>move(-1)}>← 上一件</button><button onClick={()=>move(1)}>下一件 →</button></div></aside>
-      </div>
-    </div>}
-
-    {letterOpen&&<div className="letter-overlay" role="dialog" aria-modal="true" aria-label="留给未来的一封信" onClick={()=>setLetterOpen(false)}>
-      <article className="letter" onClick={event=>event.stopPropagation()}><button className="letter-close" onClick={()=>setLetterOpen(false)}>关闭 ×</button><small>FOR THE MAKER / 2026</small><h2>这个小网站，属于你。</h2><p>它不是作品的终点，只是一个小小的展示柜，用来保存你已经织出来的可爱，也留出位置，等待以后出现的新作品。</p><p>里面哪些作品留下、哪些换掉、以后要不要继续更新，都由你决定。</p><strong>你的作品值得被好好看见。<br/>下一件，也会很有意思。</strong><span>— 一位认真看过这些作品的朋友</span></article>
-    </div>}
-  </main>
+{contents&&<div className="contents-overlay" onClick={()=>setContents(false)}>
+<aside onClick={event=>event.stopPropagation()}><button className="close-contents" onClick={()=>setContents(false)}>关闭 ×</button><p>TABLE OF CONTENTS</p><h2>这一路，分成四章。</h2>
+{chapters.map((item,index)=><button className="toc-chapter" key={item.key} onClick={()=>go(item.start)}><i style={{background:item.color}}/><span><small>CHAPTER 0{index+1}</small><strong>{item.title}</strong><em>{item.start+1}—{(chapters[index+1]?.start??works.length)} 页</em></span></button>)}
+<button className="toc-final" onClick={()=>go(works.length)}>未完待续 · PAGE 19 →</button></aside>
+</div>}
+</section>}
+</main>
 }
