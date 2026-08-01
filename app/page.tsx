@@ -8,42 +8,45 @@ type Spread={year:string;color:string;left:JournalPage;right:JournalPage};
 const work=(id:number,title:string,date:string,kind:string,caption:string,sticker?:string):Entry=>({id,title,date,kind,image:`./works/${String(id).padStart(2,"0")}.webp`,caption,sticker});
 
 const spreads:Spread[]=[
-{year:"2024 · 起针与第一次成形",color:"#d69aa9",left:{eyebrow:"CHAPTER 01 · 起针",title:"我先从「穿得出去」开始",aside:"帽子、背心，还有一件像撒了彩糖的五月。",layout:"triptych",items:[
+{year:"2024 · 从第一针开始",color:"#d69aa9",left:{eyebrow:"CHAPTER 01 · 起针",title:"我先织点真的能穿出去的",aside:"帽子和背心，是我的毛线新手村装备。",layout:"duo",items:[
 work(30,"三国万里子帽子","2024 年","帽子","第一顶帽子先选酒红色。戴上的那一刻，我的毛线新手村也算正式开张。","START"),
-work(29,"横田古着背心","2024 年","背心","条纹、古着感、还有一点不肯规规矩矩的颜色——很像我刚开始就藏不住的主意。","偏要条纹"),
-work(28,"芭贝毛线背心","2024.05.11","背心","五月十一日，我把彩点毛线织成一件软乎乎的背心。原来一团线真的能变成当天的好心情。","05.11")
-]},right:{eyebrow:"CHAPTER 02 · 有自己的线条",title:"后来，我不太想走直线了",aside:"锯齿会拐弯，山脉也有两种天气。",layout:"triptych",items:[
-work(27,"Zig Zag Scarf","2024 年","围巾","粉色可以温柔，锯齿也可以捣蛋。我没有二选一，因为两个都很像我。","ZIG ZAG"),
+work(29,"横田古着背心","2024 年","背心","条纹、古着感，还有一点不肯规规矩矩的颜色——刚开始，我就已经藏不住自己的主意。","偏要条纹")
+]},right:{eyebrow:"CHAPTER 02 · 快乐加量",title:"五月以后，我开始让线条捣蛋",aside:"一件像彩糖，一条故意不走直线。",layout:"duo",items:[
+work(28,"芭贝毛线背心","2024.05.11","背心","五月十一日，我把彩点毛线织成一件软乎乎的背心。原来一团线真的能变成当天的好心情。","05.11"),
+work(27,"Zig Zag Scarf","2024 年","围巾","粉色可以温柔，锯齿也可以捣蛋。我没有二选一，因为两个都很像我。","ZIG ZAG")
+]}},
+{year:"2024 · 慢慢织出自己的样子",color:"#9bb8cf",left:{eyebrow:"CHAPTER 03 · 山脉连续剧",title:"同一个名字，也能有两种天气",aside:"一件像淡蓝晴天，一件装进薄荷和阳光。",layout:"duo",items:[
 work(26,"白色山脉背心","2024 年","背心","淡蓝色轻得像一小片晴天。织到这里，我开始知道自己喜欢怎样的留白。","晴天款"),
 work(24,"白色山脉","2024 年","背心","再走一次山脉，这回把薄荷、粉色和阳光一起带上。同一个名字，也能长出新表情。","再来一次")
-]}},
-{year:"2024 → 2025 · 技能树展开",color:"#9bb8cf",left:{eyebrow:"CHAPTER 03 · 基本功也有性格",title:"所谓基础款，也要经过我的配色",aside:"袜子去晒太阳，披肩和围巾慢慢学会温柔。",layout:"triptych",items:[
+]},right:{eyebrow:"CHAPTER 04 · 基本功有性格",title:"所谓基础款，也要经过我的配色",aside:"袜子去晒太阳，披肩像一封安静的信。",layout:"duo",items:[
 work(22,"平平针基础款袜子","2024 年","袜子","平平针是基本功，可我的袜子偏要像刚完成冒险任务的装备。实用和热闹可以一起出现。","LEVEL UP"),
-work(21,"Close to You","2024 年","披肩","这一件浅浅的、软软的。挂在枝头的时候，我发现自己也能把毛线织得像一封安静的信。","soft"),
-work(19,"三角小围巾","2025 年","围巾","咖啡色在阳光里有一点复古，再别上一枚金色小胸针。嗯，我越来越会给作品找位置了。","会搭！")
-]},right:{eyebrow:"CHAPTER 04 · 长项目进行中",title:"我把耐心，一格一格织出来",aside:"有完工照，也有还在棒针上长大的那几天。",layout:"triptych",items:[
-work(18,"华夫套衫","2025 年","套衫","一格一格往前，回过神已经是一整件套衫。原来耐心不是等出来的，是每一行都没有跳过。","耐心 +100"),
+work(21,"Close to You","2024 年","披肩","这一件浅浅的、软软的。挂在枝头的时候，我发现自己也能把毛线织得像一封安静的信。","soft")
+]}},
+{year:"2025 · 耐心开始有形状",color:"#a8b89e",left:{eyebrow:"CHAPTER 05 · 越来越会完成",title:"小甜点之后，是一整件大工程",aside:"从一条小围巾，到密密麻麻的华夫格。",layout:"duo",items:[
+work(19,"三角小围巾","2025 年","围巾","咖啡色在阳光里有一点复古，再别上一枚金色小胸针。嗯，我越来越会给作品找位置了。","会搭！"),
+work(18,"华夫套衫","2025 年","套衫","一格一格往前，回过神已经是一整件套衫。原来耐心不是等出来的，是每一行都没有跳过。","耐心 +100")
+]},right:{eyebrow:"CHAPTER 06 · 过程也值得贴下来",title:"没有完工的日子，也在认真前进",aside:"棒针上的半成品，和花丛里的完成照。",layout:"duo",items:[
 work(17,"伊莉斯小围巾","2025 年","围巾","伊莉斯还在棒针上慢慢长大。过程没有成品那么整齐，但这也是我认真赶路的样子。","进行中"),
 work(15,"Lace Scarf","2025 年","围巾","完工以后，我给它找了一片花做背景。作品做好了还不算，我还想让它好好登场。","春日限定")
 ]}},
-{year:"2025 · 配色和花纹会说话",color:"#b9aacf",left:{eyebrow:"CHAPTER 05 · 披肩实验室",title:"脑洞先跑，针脚负责追上",aside:"反差、轮廓、花样——我开始把“为什么好看”也织进去。",layout:"triptych",items:[
+{year:"2025 · 配色和花纹会说话",color:"#b9aacf",left:{eyebrow:"CHAPTER 07 · 披肩实验室",title:"脑洞先跑，针脚负责追上",aside:"反差、轮廓、花样，我开始把“为什么好看”也织进去。",layout:"triptych",items:[
 work(14,"安仁披肩","2025 年","披肩","绿蓝配红边康乃馨，听起来有点冒险。可我把它们放在一起以后，只想说：果然很可以。","大胆配"),
 work(12,"云蛟披肩","2025 年","披肩","焦糖橘接上深咖，柔软里一下有了气势。名字叫云蛟，当然要认真登场。","召唤成功"),
-work(11,"踏脚石披肩","2025 年","披肩","我把轮廓和花样都画清楚。不是随便织，是一排一排踩着踏脚石，把想法带到现实。","CHECK")
-]},right:{eyebrow:"CHAPTER 06 · 花纹小剧场",title:"可爱可以安静，也可以很有戏",aside:"深色里开花，荧光黄负责把镜头抢走。",layout:"triptych",items:[
+work(11,"踏脚石披肩","2025 年","披肩","我把轮廓和花样都画清楚。不是随便织，是一排排踩着踏脚石，把想法带到现实。","CHECK")
+]},right:{eyebrow:"CHAPTER 08 · 花纹小剧场",title:"可爱可以安静，也可以很有戏",aside:"深色里开花，荧光黄负责把镜头抢走。",layout:"triptych",items:[
 work(10,"繁花披肩","2025 年","披肩","深灰负责稳住，玫红一朵一朵跳出来。我把暗色里的小火花，全都留了下来。","BLOOM"),
 work(9,"小繁花披肩","2025 年","披肩","红黑披肩、同色线团，再安排一位表情很有戏的小助理。我的作品照也要有剧情。","本日导演"),
 work(8,"钻石帽子","2025 年","帽子","钻石纹再加荧光黄，低调是不可能低调的。偶尔就该亮到连自己都忍不住多看两眼。","ENFP")
 ]}},
-{year:"2026 · 喜欢开始住进生活",color:"#91b8aa",left:{eyebrow:"CHAPTER 07 · 毛茸茸研究所",title:"成熟和幼稚，我当然都要",aside:"围巾、开衫、杯垫：认真生活，也认真搞怪。",layout:"triptych",items:[
+{year:"2026 · 喜欢住进日常",color:"#91b8aa",left:{eyebrow:"CHAPTER 09 · 毛茸茸研究所",title:"成熟和幼稚，我当然都要",aside:"围巾、开衫、杯垫：认真生活，也认真搞怪。",layout:"triptych",items:[
 work(6,"不完全柏林围巾","2026 年","围巾","名字虽然叫“不完全”，这团粉色却已经很会抢镜。完成度可以等等，快乐先到就好。","先赢一半"),
 work(5,"Sophie’s Cardigan","2026 年","开衫","开衫负责沉稳灰，小挂件负责偷偷可爱。我没打算选边站，这两种样子都是我。","都要"),
 work(4,"杯垫","2026 年","生活小物","杯垫上再织一只红色小包。有人说没必要，可让普通一天变可爱一点，本来就很有必要。","很有必要")
-]},right:{eyebrow:"CHAPTER 08 · 我的日常联动",title:"毛线终于和手帐、角色碰面了",aside:"我喜欢的东西没有各玩各的，它们住进了同一页。",layout:"duo",items:[
+]},right:{eyebrow:"CHAPTER 10 · 我的日常联动",title:"毛线终于和手帐、角色碰面了",aside:"我喜欢的东西没有各玩各的，它们住进了同一页。",layout:"duo",items:[
 work(3,"手帐收纳袋","2026 年","收纳袋","深蓝和橙色绕在一起，再装三颗不一样的按钮。它替纸笔安了家，也把我的小任性一起收好。","住进来吧"),
 work(2,"小繁花三角巾","2026 年","三角巾","我没有把它规规矩矩铺平，而是先借小鸭戴一下。作品一遇到角色，立刻就有了自己的表情。","かわいい")
 ]}},
-{year:"未完待续 · 2024—2026",color:"#d7a2b3",left:{eyebrow:"TO BE CONTINUED · 09",title:"原来，我已经织了这么远",aside:"23件作品不是清单，是我一次次起针、拆掉、重来，也一直没弄丢可爱的证据。",layout:"duo",kind:"recap",items:[]},right:{eyebrow:"这一页，由朋友来写 · 10",title:"给未来还会继续织东西的你",aside:"",layout:"hero",kind:"letter",items:[]}}
+{year:"未完待续 · 2024—2026",color:"#d7a2b3",left:{eyebrow:"TO BE CONTINUED · 11",title:"原来，我已经织了这么远",aside:"23件作品不是清单，是我一次次起针、拆掉、重来，也一直没弄丢可爱的证据。",layout:"duo",kind:"recap",items:[]},right:{eyebrow:"这一页，由朋友来写 · 12",title:"给未来还会继续织东西的你",aside:"",layout:"hero",kind:"letter",items:[]}}
 ];
 
 const mobilePages=spreads.flatMap((spread,spreadIndex)=>([
@@ -60,7 +63,7 @@ return <article className={`work-card card-${index}`}>
 
 function JournalPageView({page,side,index,year,color}:{page:JournalPage;side:"left"|"right";index:number;year:string;color:string}){
 if(page.kind==="recap")return <section className="journal-page recap-page side-left"><div className="page-no">{String(index*2+1).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>{year}</div><p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2><p className="page-aside">{page.aside}</p><div className="stamp-cloud" aria-hidden="true">{[30,22,15,8,5,2].map((id,i)=><span key={id} style={{transform:`rotate(${[-7,5,-3,8,-5,4][i]}deg)`}}><img src={`./works/${String(id).padStart(2,"0")}.webp`} alt=""/></span>)}</div><div className="recap-copy"><b>我的毛线宇宙配方</b><p>一点大胆配色　＋　一点二次元脑洞<br/>＋　很多很多耐心　＋　永远不嫌多的可爱</p></div></section>;
-if(page.kind==="letter")return <section className="journal-page letter-page side-right"><div className="page-no">{String(index*2+2).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>FOR YOU ♡</div><p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2><div className="letter-paper"><span>给你：</span><p>愿你以后还会遇到很多喜欢的线，也一直有突然冒出来的好点子。</p><p>想拆就拆，想重来就重来；慢一点没关系，做得开心最重要。</p><p>也愿你一直保留这种本事——把普通的日子，认真变得可爱一点。</p><p>下一件作品完成时，记得回来给这本手帐加一页。</p><b>—— 一个一直认真围观你作品的朋友</b></div><div className="letter-doodle" aria-hidden="true">🐾　✦　♡　毛线万岁！</div></section>;
+if(page.kind==="letter")return <section className="journal-page letter-page side-right"><div className="page-no">{String(index*2+2).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>FOR YOU ♡</div><p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2><div className="letter-paper"><span>给你：</span><p>愿你以后还会遇到很多喜欢的线，也一直有突然冒出来的好点子。</p><p>想拆就拆，想重来就重来；慢一点没关系，做得开心最重要。</p><p>也愿你一直保留这种本事——把普通的日子，认真变得可爱一点。</p><p>下一件作品完成时，记得回来给这本手帐加一页。</p><b>雨佳 ☺</b></div><div className="letter-doodle" aria-hidden="true">🐾　✦　♡　毛线万岁！</div></section>;
 return <section className={`journal-page side-${side} page-layout-${page.layout}`}><div className="page-no">{String(index*2+(side==="right"?2:1)).padStart(2,"0")}</div><div className="year-tab" style={{background:color}}>{year}</div><p className="eyebrow">{page.eyebrow}</p><h2>{page.title}</h2><p className="page-aside">{page.aside}</p><div className="work-layout">{page.items.map((item,i)=><WorkCard key={item.id} item={item} index={i}/>)}</div><span className="page-doodle" aria-hidden="true">{side==="left"?"♡₊˚ えらい！":"✦ できた！ ˚₊"}</span></section>;
 }
 
@@ -76,8 +79,8 @@ function OpeningBook({state,onOpen,isMobile}:{state:"closed"|"opening";onOpen:()
 return <section className={`book-object ${state} ${isMobile?"mobile-opening":""}`} aria-label="合拢的毛线手帐">
 <div className="opening-pages">{isMobile?<MobilePageView pageIndex={0}/>:<SpreadView spread={spreads[0]} index={0}/>}</div>
 <button className="front-cover" onClick={onOpen} disabled={state==="opening"} aria-label="翻开毛线手帐">
-<div className="cover-face cover-front"><span className="cover-seam"/><div className="mini-photos" aria-hidden="true"><i><img src="./works/30.webp" alt=""/></i><i><img src="./works/08.webp" alt=""/></i><i><img src="./works/02.webp" alt=""/></i></div><div className="small-label">わたしの HANDMADE JOURNAL</div><h1>我的毛线<br/><em>搞怪手帐</em></h1><p>23件作品<br/>把快乐一针一线收进来</p><b className="open-label">从页脚轻轻翻开　↗</b><span className="cover-badge">ENFP<br/>快乐小狗</span></div>
-<div className="cover-face cover-back"><div className="inside-pocket"><b>HELLO!</b><p>这本手帐里，住着毛线、脑洞，还有很多次“再织一行就睡”。</p><span>请慢慢翻　♡</span></div></div>
+<div className="cover-face cover-front"><span className="cover-seam"/><div className="mini-photos" aria-hidden="true"><i><img src="./works/30.webp" alt=""/></i><i><img src="./works/08.webp" alt=""/></i><i><img src="./works/02.webp" alt=""/></i></div><div className="small-label">わたしの HANDMADE JOURNAL</div><h1>我的毛线<br/><em>搞怪手帐</em></h1><p>23件作品 · 12页<br/>把快乐一针一线收进来</p><b className="open-label">轻点封面翻开　↗</b><span className="cover-badge">ENFP<br/>快乐小狗</span></div>
+<div className="cover-face cover-back" aria-hidden="true"/>
 </button>
 </section>;
 }
@@ -120,9 +123,9 @@ return <main className={"desk book-"+bookState}>
 {bookState!=="open"?<OpeningBook state={bookState} onOpen={openBook} isMobile={isMobile}/>:<section className="reader"><div className={"book-shell "+(isMobile?"mobile-book-shell ":"")+(settling?"is-settling ":"")+(dragDir?"turn-"+dragDir:"")} ref={bookRef} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
 {dragDir&&target!==fromIndex&&(isMobile?<MobilePageView pageIndex={target} className="target-page"/>:<SpreadView spread={spreads[target]} index={target} className="target-spread"/>)}{isMobile?<MobilePageView pageIndex={fromIndex} className="active-page"/>:<SpreadView spread={spreads[fromIndex]} index={fromIndex} className="active-spread"/>}
 {dragDir&&target!==fromIndex&&<div className={"turning-leaf leaf-"+dragDir} style={leafStyle} aria-hidden="true"><div className="leaf-face leaf-front"><JournalPageView page={frontPage} side={frontSide} index={frontPageIndex} year={frontYear} color={frontColor}/></div><div className="leaf-face leaf-back"><JournalPageView page={backPage} side={backSide} index={backPageIndex} year={backYear} color={backColor}/></div><span className="paper-curl"/></div>}
-<div className="book-spine"/><button className="cover-tab" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>{setBookState("closed");setCurrent(0);clearTurn()}}>合上 ↗</button><div className="spread-count">{String(current+1).padStart(2,"0")} / {String(total).padStart(2,"0")}</div>
+<div className="book-spine"/><button className="cover-tab" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>{setBookState("closed");setCurrent(0);clearTurn()}}>回到封面</button><div className="spread-count">{isMobile?"单页":"跨页"} {String(current+1).padStart(2,"0")} / {String(total).padStart(2,"0")}</div>
 <button className="page-edge edge-left" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("prev")} disabled={current===0} aria-label="上一页"><i>←</i></button><button className="page-edge edge-right" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("next")} disabled={current===total-1} aria-label="下一页"><i>→</i></button>
-<nav className="thread-nav" aria-label="手帐页码">{navItems.map((item,index)=><button key={index} className={index===current?"active":""} onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>jump(index)} aria-label={"第"+(index+1)+"页"} style={{"--thread":item.color} as React.CSSProperties}/>)}</nav><span className="swipe-note">{isMobile?"向左翻下一页 · 向右回上一页":"抓住页脚拖动 · 左右翻页"}</span>
+<nav className="thread-nav" aria-label="手帐页码">{navItems.map((item,index)=><button key={index} className={index===current?"active":""} onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>jump(index)} aria-label={"第"+(index+1)+"页"} style={{"--thread":item.color} as React.CSSProperties}/>)}</nav><span className="swipe-note">{isMobile?"左右滑动翻页 · 点页角也可以":"拖动纸页或点击页角翻页"}</span>
 </div></section>}
 </main>;
 }
