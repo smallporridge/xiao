@@ -313,7 +313,7 @@ body{color:var(--ink);background:var(--desk)}
 .journal-page:before{border-color:rgba(177,118,132,.085)}
 .book-spine{width:24px;background:linear-gradient(90deg,transparent,rgba(93,65,57,.15),rgba(255,251,240,.72),rgba(93,65,57,.16),transparent)}
 .book-spine:after{content:"";position:absolute;left:50%;top:14px;bottom:14px;width:2px;transform:translateX(-50%);background:repeating-linear-gradient(0deg,#c88999 0 7px,transparent 7px 14px);opacity:.5}
-.bookmark-ribbon{position:absolute;z-index:2;left:52%;top:8px;bottom:-21px;width:14px;background:linear-gradient(90deg,#dca0b0,#efbdc8 46%,#c9899b);box-shadow:1px 2px 3px rgba(91,62,57,.18);clip-path:polygon(0 0,100% 0,100% 100%,50% 88%,0 100%);pointer-events:none;transform:translateX(-50%) rotate(.5deg)}
+.bookmark-ribbon{position:absolute;z-index:1;left:52%;top:auto;bottom:-21px;width:14px;height:34px;background:linear-gradient(90deg,#dca0b0,#efbdc8 46%,#c9899b);box-shadow:1px 2px 3px rgba(91,62,57,.18);clip-path:polygon(0 0,100% 0,100% 100%,50% 88%,0 100%);pointer-events:none;transform:translateX(-50%) rotate(.5deg)}
 .year-tab{border-color:rgba(93,69,61,.46);box-shadow:1.5px 1.5px 0 rgba(93,69,61,.28)}
 .eyebrow{color:#a35d72}
 .work-card{border-color:rgba(93,69,61,.19);background:#fffef9;box-shadow:0 1px 0 #fff,3px 5px 11px rgba(84,61,54,.105)}
@@ -334,7 +334,7 @@ body{color:var(--ink);background:var(--desk)}
   .cover-front{padding-top:6%;box-shadow:inset 24px 0 0 #efb7c4,inset 28px 0 0 #765f58,5px 8px 0 #b48f84}
   .cover-yarn{left:2%;top:43%;width:90px;height:85px;transform:scale(.82) rotate(-8deg);transform-origin:left top}
   .reader .book-shell:before{inset:5px -4px -7px 4px;border-radius:8px 18px 18px 8px;box-shadow:4px 6px 0 #b9968a}
-  .mobile-book-shell .bookmark-ribbon{left:15%;top:7px;bottom:-17px;width:12px}
+  .mobile-book-shell .bookmark-ribbon{left:15%;top:auto;bottom:-17px;width:12px;height:29px}
   .mobile-book-shell .journal-page{background-color:#fffaf0}
   .mobile-book-shell .thread-nav{max-width:82%;gap:1px}
   .mobile-book-shell .thread-nav button,.mobile-book-shell .thread-nav button.active{width:13px}
