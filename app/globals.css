@@ -347,11 +347,11 @@ body{color:var(--ink);background:var(--desk)}
 }
 
 /* Reference-art edition — the generated fabric journal becomes the actual cover. */
-.cover-front{display:block;padding:0;background:#f7e7c8;box-shadow:7px 10px 0 #b68f84;overflow:hidden}
+.cover-front{display:block;padding:0;border:0;background:#f7e7c8;box-shadow:none;overflow:hidden}
 .cover-front:after{display:none}
-.cover-art-image{position:absolute;z-index:1;left:50%;top:0;width:auto;height:100%;max-width:none;object-fit:contain;transform:translateX(-50%);transition:filter .24s ease,transform .24s ease;user-select:none;pointer-events:none}
+.cover-art-image{position:absolute;z-index:1;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center;transform:none;transition:filter .24s ease,transform .24s ease;user-select:none;pointer-events:none}
 .cover-art-gloss{position:absolute;z-index:2;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.17),transparent 29%,transparent 72%,rgba(111,77,67,.06));pointer-events:none}
-.front-cover:not(:disabled):hover .cover-art-image{filter:brightness(1.025);transform:translateX(-50%) scale(1.006)}
+.front-cover:not(:disabled):hover .cover-art-image{filter:brightness(1.025);transform:scale(1.006)}
 .cover-front .open-label{z-index:4;right:4%;bottom:2.8%;padding:8px 12px;border:1px solid rgba(92,66,59,.54);border-radius:20px;background:rgba(244,216,145,.94);box-shadow:2px 2px 0 rgba(92,66,59,.35);color:#654d46;font-size:10px;backdrop-filter:blur(3px)}
 .cover-back{background-color:#f7e7c8;background-image:linear-gradient(rgba(239,183,196,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(239,183,196,.1) 1px,transparent 1px),radial-gradient(rgba(101,77,68,.05) .65px,transparent .72px);background-size:24px 24px,24px 24px,6px 6px}
 
@@ -397,8 +397,8 @@ body{color:var(--ink);background:var(--desk)}
 .thread-nav button:after{box-shadow:0 0 0 1px rgba(105,77,68,.11)}
 
 @media(max-width:820px){
-  .cover-front{padding:0;box-shadow:5px 8px 0 #b68f84}
-  .cover-art-image{height:100%;width:auto;max-width:none}
+  .cover-front{padding:0;box-shadow:none}
+  .cover-art-image{width:100%;height:100%;max-width:none;object-fit:cover}
   .cover-front .open-label{right:4%;bottom:2%;padding:7px 10px;font-size:9px}
   .mobile-book-shell .journal-page>h2:after{margin-top:3px;font-size:8px}
   .mobile-book-shell .journal-page{background-color:#fff8e8}
