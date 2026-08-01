@@ -2,21 +2,48 @@
 import {useEffect,useLayoutEffect,useRef,useState} from "react";
 
 type Entry={id:number;title:string;date:string;kind:string;image:string;caption:string;sticker?:string};
-type JournalPage={eyebrow:string;title:string;aside:string;layout:"hero"|"duo"|"cascade"|"postcard";items:Entry[];kind?:"works"|"recap"|"letter"};
+type JournalPage={eyebrow:string;title:string;aside:string;layout:"hero"|"duo"|"cascade"|"postcard"|"triptych";items:Entry[];kind?:"works"|"recap"|"letter"};
 type Spread={year:string;color:string;left:JournalPage;right:JournalPage};
 
 const work=(id:number,title:string,date:string,kind:string,caption:string,sticker?:string):Entry=>({id,title,date,kind,image:`./works/${String(id).padStart(2,"0")}.webp`,caption,sticker});
 
 const spreads:Spread[]=[
-{year:"2024 · 起针！",color:"#f7a9bd",left:{eyebrow:"はじめまして · 01",title:"最开始，我先织点能穿的",aside:"新手村也要有主角气场。",layout:"duo",items:[work(30,"三国万里子帽子","2024","帽子","先从一顶酒红帽子开始！软乎乎的，戴上就是今日主角。","START!"),work(29,"横田古着背心","2024","背心","条纹多一点，快乐也多一点。线头先别催，我还在收尾啦！","别催～")]},right:{eyebrow:"MAY 2024 · 02",title:"再来一件！这次撒点彩糖",aside:"五月的快乐，被我织成一件毛茸茸的背心。",layout:"hero",items:[work(28,"芭贝毛线背心","2024.05.11","背心","彩点毛线像把糖撒进云里。配色不需要很讲道理，我开心就很合理。","NEW!")] }},
-{year:"2024 · 越织越有主见",color:"#9fc8ee",left:{eyebrow:"弯弯曲曲 · 03",title:"围巾为什么一定要走直线？",aside:"我偏要让它拐来拐去。",layout:"postcard",items:[work(27,"Zig Zag Scarf","2024","围巾","粉色负责温柔，锯齿负责捣蛋。乖巧和搞怪，我两个都要。","ZIG! ZAG!")]},right:{eyebrow:"山脉连续剧 · 04",title:"同一个名字，两种天气",aside:"一件像薄荷晴天，一件像淡蓝色的云。",layout:"cascade",items:[work(26,"白色山脉背心","2024","背心","淡蓝色轻得像一小片天空。棒针先放旁边，我要欣赏一下进度。","天空色"),work(24,"白色山脉","2024","背心","再走一遍山脉，这次把薄荷绿、粉色和阳光一起织进去。","TA-DA!")] }},
-{year:"2024 → 2025 · 基础也不普通",color:"#f4cf65",left:{eyebrow:"基本功修行 · 05",title:"写着基础款，配色可不基础",aside:"我的袜子甚至要去树上晒太阳。",layout:"duo",items:[work(22,"平平针基础款袜子","2024","袜子","一双要实用，一双也要像刚完成冒险的装备。基础针法也能很热闹。","LEVEL UP"),work(21,"Close to You","2024","披肩","浅浅的、软软的，挂在枝头也像一封信。今天走温柔路线。","soft...")]},right:{eyebrow:"阳光收藏 · 06",title:"给冬天做一块咖啡色小甜点",aside:"一条围巾，加一枚金色小胸针，完成。",layout:"hero",items:[work(19,"三角小围巾","2025","围巾","咖啡色被阳光一晒，突然有点复古。我把小胸针别好：嗯，很会搭。","好看！")] }},
-{year:"2025 · 大工程进行中",color:"#a9c49d",left:{eyebrow:"耐心值 +100 · 07",title:"华夫格：密密麻麻，但会上瘾",aside:"灰色不是无聊，是把细节都藏近一点。",layout:"hero",items:[work(18,"华夫套衫","2025","套衫","一格一格往前织，回过神已经变成一整件。袖子再长，也拦不住我收尾。","完成啦")]},right:{eyebrow:"过程也要贴进来 · 08",title:"我不只收藏完工照",aside:"线团、棒针和半成品，都是故事的一部分。",layout:"cascade",items:[work(17,"伊莉斯小围巾","2025","围巾","伊莉斯还在棒针上长大。别急，我和线团都在认真赶路。","ing..."),work(15,"Lace Scarf","2025","围巾","完工以后给它找了一片花当背景。今天请叫我春日摄影师。","春日限定")] }},
-{year:"2025 · 作品也要有小舞台",color:"#c5b5e7",left:{eyebrow:"配色实验室 · 09",title:"反差这么大，居然很合拍",aside:"我的脑洞经常先跑，针脚在后面追。",layout:"duo",items:[work(14,"安仁披肩","2025","披肩","绿蓝毛线配红边康乃馨，谁规定它们不能坐一桌？我觉得很可以。","大胆配！"),work(12,"云蛟披肩","2025","披肩","焦糖橘接上深咖，柔软里立刻有了气势。云蛟，登场！","召唤成功")]},right:{eyebrow:"认真画重点 · 10",title:"不是随便织，我有路线图的！",aside:"会做以后，还想把它为什么好看讲清楚。",layout:"postcard",items:[work(11,"踏脚石披肩","2025","披肩","我把轮廓和花样都标出来。走过这一排踏脚石，披肩就会慢慢展开。","CHECK!")] }},
-{year:"2025 · 花纹开始会说话",color:"#f0a7b3",left:{eyebrow:"酷一点的花 · 11",title:"深灰负责稳住，玫红负责跳出来",aside:"繁花也可以开得很酷。",layout:"hero",items:[work(10,"繁花披肩","2025","披肩","一朵、两朵、好多朵。暗色里冒出来的小火花，被我全部留住。","BLOOM!")]},right:{eyebrow:"小剧场开演 · 12",title:"作品旁边必须坐一位小助理",aside:"表情管理失败没关系，可爱就能上岗。",layout:"duo",items:[work(9,"小繁花披肩","2025","披肩","红黑披肩、同色线团，再安排一位表情很有戏的小助理。开拍！","本日导演"),work(8,"钻石帽子","2025","帽子","钻石纹加荧光黄，低调是不可能低调的。今天我要亮到自己！","ENFP!")] }},
-{year:"2026 · 喜欢都住进来了",color:"#f6c66e",left:{eyebrow:"毛茸茸警报 · 13",title:"先承认：还没完全。再宣布：粉色赢了",aside:"完成度可以等等，快乐要先贴上来。",layout:"cascade",items:[work(6,"不完全柏林围巾","2026","围巾","这团粉色毛茸茸得太犯规。就算名字叫“不完全”，也已经很会抢镜。","先赢一半"),work(5,"Sophie’s Cardigan","2026","开衫","开衫负责沉稳灰，小挂件负责可爱。成熟和幼稚，我当然都要。","都要！")]},right:{eyebrow:"无用可爱研究所 · 14",title:"小东西，也值得认真搞怪",aside:"普通的一天需要一点没必要但很开心的细节。",layout:"postcard",items:[work(4,"杯垫","2026","生活小物","杯垫上再织一只红色小包，属于“在小东西上认真做无用可爱”。","很有必要")] }},
-{year:"2026 · 我的喜欢终于碰面",color:"#93c8bd",left:{eyebrow:"手帐 × 毛线 · 15",title:"手帐也要有毛线做的家",aside:"纸笔、按钮和毛线，今天正式成为室友。",layout:"hero",items:[work(3,"手帐收纳袋","2026","收纳袋","深蓝和橙色绕在一起，再装上三颗不一样的按钮。对呀，我故意的。","住进来吧")]},right:{eyebrow:"最新一页 · 16",title:"小繁花，先借小鸭戴一下",aside:"合不合适不重要，可爱就对了。",layout:"hero",items:[work(2,"小繁花三角巾","2026","三角巾","我没有把它规规矩矩铺平，因为作品一戴到角色身上，马上就有表情了。","かわいい!")] }},
-{year:"未完待续 · 17",color:"#f4aec4",left:{eyebrow:"TO BE CONTINUED",title:"原来，我已经织了这么远",aside:"23件作品，不是清单，是我一点点变厉害、也一直没弄丢可爱的证据。",layout:"duo",kind:"recap",items:[]},right:{eyebrow:"这一页，由朋友来写",title:"给未来还会继续织东西的你",aside:"",layout:"hero",kind:"letter",items:[]}}
+{year:"2024 · 起针与第一次成形",color:"#d69aa9",left:{eyebrow:"CHAPTER 01 · 起针",title:"我先从「穿得出去」开始",aside:"帽子、背心，还有一件像撒了彩糖的五月。",layout:"triptych",items:[
+work(30,"三国万里子帽子","2024 年","帽子","第一顶帽子先选酒红色。戴上的那一刻，我的毛线新手村也算正式开张。","START"),
+work(29,"横田古着背心","2024 年","背心","条纹、古着感、还有一点不肯规规矩矩的颜色——很像我刚开始就藏不住的主意。","偏要条纹"),
+work(28,"芭贝毛线背心","2024.05.11","背心","五月十一日，我把彩点毛线织成一件软乎乎的背心。原来一团线真的能变成当天的好心情。","05.11")
+]},right:{eyebrow:"CHAPTER 02 · 有自己的线条",title:"后来，我不太想走直线了",aside:"锯齿会拐弯，山脉也有两种天气。",layout:"triptych",items:[
+work(27,"Zig Zag Scarf","2024 年","围巾","粉色可以温柔，锯齿也可以捣蛋。我没有二选一，因为两个都很像我。","ZIG ZAG"),
+work(26,"白色山脉背心","2024 年","背心","淡蓝色轻得像一小片晴天。织到这里，我开始知道自己喜欢怎样的留白。","晴天款"),
+work(24,"白色山脉","2024 年","背心","再走一次山脉，这回把薄荷、粉色和阳光一起带上。同一个名字，也能长出新表情。","再来一次")
+]}},
+{year:"2024 → 2025 · 技能树展开",color:"#9bb8cf",left:{eyebrow:"CHAPTER 03 · 基本功也有性格",title:"所谓基础款，也要经过我的配色",aside:"袜子去晒太阳，披肩和围巾慢慢学会温柔。",layout:"triptych",items:[
+work(22,"平平针基础款袜子","2024 年","袜子","平平针是基本功，可我的袜子偏要像刚完成冒险任务的装备。实用和热闹可以一起出现。","LEVEL UP"),
+work(21,"Close to You","2024 年","披肩","这一件浅浅的、软软的。挂在枝头的时候，我发现自己也能把毛线织得像一封安静的信。","soft"),
+work(19,"三角小围巾","2025 年","围巾","咖啡色在阳光里有一点复古，再别上一枚金色小胸针。嗯，我越来越会给作品找位置了。","会搭！")
+]},right:{eyebrow:"CHAPTER 04 · 长项目进行中",title:"我把耐心，一格一格织出来",aside:"有完工照，也有还在棒针上长大的那几天。",layout:"triptych",items:[
+work(18,"华夫套衫","2025 年","套衫","一格一格往前，回过神已经是一整件套衫。原来耐心不是等出来的，是每一行都没有跳过。","耐心 +100"),
+work(17,"伊莉斯小围巾","2025 年","围巾","伊莉斯还在棒针上慢慢长大。过程没有成品那么整齐，但这也是我认真赶路的样子。","进行中"),
+work(15,"Lace Scarf","2025 年","围巾","完工以后，我给它找了一片花做背景。作品做好了还不算，我还想让它好好登场。","春日限定")
+]}},
+{year:"2025 · 配色和花纹会说话",color:"#b9aacf",left:{eyebrow:"CHAPTER 05 · 披肩实验室",title:"脑洞先跑，针脚负责追上",aside:"反差、轮廓、花样——我开始把“为什么好看”也织进去。",layout:"triptych",items:[
+work(14,"安仁披肩","2025 年","披肩","绿蓝配红边康乃馨，听起来有点冒险。可我把它们放在一起以后，只想说：果然很可以。","大胆配"),
+work(12,"云蛟披肩","2025 年","披肩","焦糖橘接上深咖，柔软里一下有了气势。名字叫云蛟，当然要认真登场。","召唤成功"),
+work(11,"踏脚石披肩","2025 年","披肩","我把轮廓和花样都画清楚。不是随便织，是一排一排踩着踏脚石，把想法带到现实。","CHECK")
+]},right:{eyebrow:"CHAPTER 06 · 花纹小剧场",title:"可爱可以安静，也可以很有戏",aside:"深色里开花，荧光黄负责把镜头抢走。",layout:"triptych",items:[
+work(10,"繁花披肩","2025 年","披肩","深灰负责稳住，玫红一朵一朵跳出来。我把暗色里的小火花，全都留了下来。","BLOOM"),
+work(9,"小繁花披肩","2025 年","披肩","红黑披肩、同色线团，再安排一位表情很有戏的小助理。我的作品照也要有剧情。","本日导演"),
+work(8,"钻石帽子","2025 年","帽子","钻石纹再加荧光黄，低调是不可能低调的。偶尔就该亮到连自己都忍不住多看两眼。","ENFP")
+]}},
+{year:"2026 · 喜欢开始住进生活",color:"#91b8aa",left:{eyebrow:"CHAPTER 07 · 毛茸茸研究所",title:"成熟和幼稚，我当然都要",aside:"围巾、开衫、杯垫：认真生活，也认真搞怪。",layout:"triptych",items:[
+work(6,"不完全柏林围巾","2026 年","围巾","名字虽然叫“不完全”，这团粉色却已经很会抢镜。完成度可以等等，快乐先到就好。","先赢一半"),
+work(5,"Sophie’s Cardigan","2026 年","开衫","开衫负责沉稳灰，小挂件负责偷偷可爱。我没打算选边站，这两种样子都是我。","都要"),
+work(4,"杯垫","2026 年","生活小物","杯垫上再织一只红色小包。有人说没必要，可让普通一天变可爱一点，本来就很有必要。","很有必要")
+]},right:{eyebrow:"CHAPTER 08 · 我的日常联动",title:"毛线终于和手帐、角色碰面了",aside:"我喜欢的东西没有各玩各的，它们住进了同一页。",layout:"duo",items:[
+work(3,"手帐收纳袋","2026 年","收纳袋","深蓝和橙色绕在一起，再装三颗不一样的按钮。它替纸笔安了家，也把我的小任性一起收好。","住进来吧"),
+work(2,"小繁花三角巾","2026 年","三角巾","我没有把它规规矩矩铺平，而是先借小鸭戴一下。作品一遇到角色，立刻就有了自己的表情。","かわいい")
+]}},
+{year:"未完待续 · 2024—2026",color:"#d7a2b3",left:{eyebrow:"TO BE CONTINUED · 09",title:"原来，我已经织了这么远",aside:"23件作品不是清单，是我一次次起针、拆掉、重来，也一直没弄丢可爱的证据。",layout:"duo",kind:"recap",items:[]},right:{eyebrow:"这一页，由朋友来写 · 10",title:"给未来还会继续织东西的你",aside:"",layout:"hero",kind:"letter",items:[]}}
 ];
 
 const mobilePages=spreads.flatMap((spread,spreadIndex)=>([
@@ -59,40 +86,43 @@ export default function Home(){
 const [bookState,setBookState]=useState<"closed"|"opening"|"open">("closed");
 const [isMobile,setIsMobile]=useState(false);
 const [current,setCurrent]=useState(0),[drag,setDrag]=useState(0),[dragDir,setDragDir]=useState<"next"|"prev"|null>(null),[settling,setSettling]=useState(false);
+const [turnFrom,setTurnFrom]=useState<number|null>(null),[turnTo,setTurnTo]=useState<number|null>(null);
 const startPos=useRef<number|null>(null),bookRef=useRef<HTMLDivElement|null>(null),rafRef=useRef<number|null>(null),pendingDrag=useRef(0),lastPos=useRef(0),lastTime=useRef(0),velocity=useRef(0),modeRef=useRef(false);
 const total=isMobile?mobilePages.length:spreads.length;
-const target=dragDir==="next"?Math.min(current+1,total-1):dragDir==="prev"?Math.max(current-1,0):current;
+const fromIndex=turnFrom??current,target=turnTo??current;
 const openBook=()=>{if(bookState!=="closed")return;setBookState("opening");window.setTimeout(()=>setBookState("open"),980)};
-const finishTurn=(dir:"next"|"prev")=>{const next=dir==="next"?current+1:current-1;if(next<0||next>=total){setDrag(0);setDragDir(null);return}setSettling(true);requestAnimationFrame(()=>setDrag(1));window.setTimeout(()=>{setCurrent(next);setSettling(false);setDrag(0);setDragDir(null)},560)};
-const animateTurn=(dir:"next"|"prev")=>{if(settling||(dir==="next"&&current===total-1)||(dir==="prev"&&current===0))return;setDragDir(dir);setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>finishTurn(dir)))};
-useEffect(()=>{const query=matchMedia("(max-width: 820px)");const sync=()=>{const next=query.matches;if(next===modeRef.current)return;setCurrent(index=>next?Math.min(index*2,mobilePages.length-1):Math.floor(index/2));modeRef.current=next;setIsMobile(next);setDrag(0);setDragDir(null)};sync();query.addEventListener("change",sync);return()=>query.removeEventListener("change",sync)},[]);
+const prepareTurn=(dir:"next"|"prev",destination?:number)=>{const next=destination??(dir==="next"?current+1:current-1);if(settling||next<0||next>=total)return false;setTurnFrom(current);setTurnTo(next);setDragDir(dir);return true};
+const clearTurn=()=>{setDrag(0);setDragDir(null);setTurnFrom(null);setTurnTo(null);setSettling(false)};
+const finishTurn=(dir:"next"|"prev")=>{const next=turnTo??(dir==="next"?current+1:current-1);if(next<0||next>=total){clearTurn();return}if(turnTo===null){setTurnFrom(current);setTurnTo(next);setDragDir(dir)}setSettling(true);requestAnimationFrame(()=>setDrag(1));window.setTimeout(()=>{setCurrent(next);requestAnimationFrame(()=>requestAnimationFrame(clearTurn))},520)};
+const animateTurn=(dir:"next"|"prev")=>{if(!prepareTurn(dir))return;setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>finishTurn(dir)))};
+useEffect(()=>{const query=matchMedia("(max-width: 820px)");const sync=()=>{const next=query.matches;if(next===modeRef.current)return;setCurrent(index=>next?Math.min(index*2,mobilePages.length-1):Math.floor(index/2));modeRef.current=next;setIsMobile(next);setDrag(0);setDragDir(null);setTurnFrom(null);setTurnTo(null)};sync();query.addEventListener("change",sync);return()=>query.removeEventListener("change",sync)},[]);
 useEffect(()=>{const onKey=(event:KeyboardEvent)=>{if(bookState!=="open")return;if(event.key==="ArrowRight")animateTurn("next");if(event.key==="ArrowLeft")animateTurn("prev")};addEventListener("keydown",onKey);return()=>{removeEventListener("keydown",onKey);if(rafRef.current!==null)cancelAnimationFrame(rafRef.current)}});
-useLayoutEffect(()=>{if(bookState==="closed")return;let frame=0;const elements=(page:Element)=>Array.from(page.querySelectorAll<HTMLElement>(".work-card p,.work-card h3,.letter-paper,.recap-copy"));const overflowing=(page:HTMLElement)=>page.scrollHeight>page.clientHeight+1||page.scrollWidth>page.clientWidth+1||elements(page).some(el=>el.scrollHeight>el.clientHeight+1||el.scrollWidth>el.clientWidth+1);const fit=()=>{document.querySelectorAll<HTMLElement>(".journal-page").forEach(page=>{page.classList.remove("fit-tight","fit-tighter");if(overflowing(page))page.classList.add("fit-tight");if(overflowing(page))page.classList.add("fit-tighter")})};fit();frame=requestAnimationFrame(fit);const observer=new ResizeObserver(()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(fit)});const host=bookRef.current??document.querySelector<HTMLElement>(".book-object");if(host)observer.observe(host);addEventListener("resize",fit);return()=>{cancelAnimationFrame(frame);observer.disconnect();removeEventListener("resize",fit)}},[bookState,current,dragDir,isMobile]);
+useLayoutEffect(()=>{if(bookState==="closed")return;let frame=0;const elements=(page:Element)=>Array.from(page.querySelectorAll<HTMLElement>(".work-card p,.work-card h3,.letter-paper,.recap-copy"));const overflowing=(page:HTMLElement)=>page.scrollHeight>page.clientHeight+1||page.scrollWidth>page.clientWidth+1||elements(page).some(el=>el.scrollHeight>el.clientHeight+1||el.scrollWidth>el.clientWidth+1);const fit=()=>{document.querySelectorAll<HTMLElement>(".journal-page").forEach(page=>{page.classList.remove("fit-tight","fit-tighter");if(overflowing(page))page.classList.add("fit-tight");if(overflowing(page))page.classList.add("fit-tighter")})};fit();frame=requestAnimationFrame(fit);const observer=new ResizeObserver(()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(fit)});const host=bookRef.current??document.querySelector<HTMLElement>(".book-object");if(host)observer.observe(host);addEventListener("resize",fit);return()=>{cancelAnimationFrame(frame);observer.disconnect();removeEventListener("resize",fit)}},[bookState,current,dragDir,turnFrom,turnTo,isMobile]);
 const point=(event:React.PointerEvent)=>event.clientX;
 const pointerDown=(event:React.PointerEvent)=>{if(settling)return;const value=point(event);startPos.current=value;lastPos.current=value;lastTime.current=performance.now();velocity.current=0;pendingDrag.current=0;(event.currentTarget as HTMLElement).setPointerCapture(event.pointerId)};
-const pointerMove=(event:React.PointerEvent)=>{if(startPos.current===null||!bookRef.current||settling)return;const now=performance.now(),value=point(event),delta=value-startPos.current;if(Math.abs(delta)<4)return;const dir=delta<0?"next":"prev";if((dir==="next"&&current===total-1)||(dir==="prev"&&current===0))return;velocity.current=(value-lastPos.current)/Math.max(1,now-lastTime.current);lastPos.current=value;lastTime.current=now;const distance=bookRef.current.clientWidth;pendingDrag.current=Math.min(Math.abs(delta)/(distance*(isMobile?.3:.43)),.995);setDragDir(dir);if(rafRef.current===null)rafRef.current=requestAnimationFrame(()=>{setDrag(pendingDrag.current);rafRef.current=null})};
-const pointerUp=()=>{if(startPos.current===null)return;startPos.current=null;const fast=Math.abs(velocity.current)>.38;if(dragDir&&(pendingDrag.current>.11||fast))finishTurn(dragDir);else{setSettling(true);setDrag(0);window.setTimeout(()=>{setSettling(false);setDragDir(null)},300)}};
-const jump=(index:number)=>{if(index===current||settling)return;const dir=index>current?"next":"prev";setDragDir(dir);setSettling(true);setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>setDrag(1)));window.setTimeout(()=>{setCurrent(index);setDrag(0);setDragDir(null);setSettling(false)},560)};
+const pointerMove=(event:React.PointerEvent)=>{if(startPos.current===null||!bookRef.current||settling)return;const now=performance.now(),value=point(event),delta=value-startPos.current;if(Math.abs(delta)<4)return;const dir=delta<0?"next":"prev",next=dir==="next"?current+1:current-1;if(next<0||next>=total)return;velocity.current=(value-lastPos.current)/Math.max(1,now-lastTime.current);lastPos.current=value;lastTime.current=now;const distance=bookRef.current.clientWidth;pendingDrag.current=Math.min(Math.abs(delta)/(distance*(isMobile?.3:.43)),.995);if(dragDir!==dir||turnTo!==next){setTurnFrom(current);setTurnTo(next);setDragDir(dir)}if(rafRef.current===null)rafRef.current=requestAnimationFrame(()=>{setDrag(pendingDrag.current);rafRef.current=null})};
+const pointerUp=()=>{if(startPos.current===null)return;startPos.current=null;const fast=Math.abs(velocity.current)>.38;if(dragDir&&(pendingDrag.current>.11||fast))finishTurn(dragDir);else{setSettling(true);setDrag(0);window.setTimeout(clearTurn,300)}};
+const jump=(index:number)=>{if(index===current||settling)return;const dir=index>current?"next":"prev";if(!prepareTurn(dir,index))return;setSettling(true);setDrag(0);requestAnimationFrame(()=>requestAnimationFrame(()=>setDrag(1)));window.setTimeout(()=>{setCurrent(index);requestAnimationFrame(()=>requestAnimationFrame(clearTurn))},520)};
 const curve=Math.sin(drag*Math.PI),shadowSide=dragDir==="next"?-1:1;
 const angle=isMobile?(dragDir==="next"?-drag*179:-(1-drag)*179):(dragDir==="next"?-1:1)*drag*179;
-const leafStyle:React.CSSProperties={transform:`perspective(1900px) rotateY(${angle}deg) rotateZ(${shadowSide*curve*(isMobile?.22:.55)}deg)`,boxShadow:`${shadowSide*curve*(isMobile?18:24)}px ${6+curve*10}px ${18+curve*28}px rgba(51,34,42,${.14+curve*.22})`,borderRadius:isMobile?`3px ${6+curve*26}px ${9+curve*34}px 3px`:dragDir==="next"?`2px ${4+curve*24}px ${7+curve*35}px 2px`:`${4+curve*24}px 2px 2px ${7+curve*35}px`};
-const frontMobileIndex=dragDir==="prev"?target:current,backMobileIndex=dragDir==="prev"?current:target;
-const frontPage=isMobile?mobilePages[frontMobileIndex].page:dragDir==="next"?spreads[current].right:spreads[current].left;
+const leafStyle:React.CSSProperties={transform:"perspective(1900px) rotateY("+angle+"deg) rotateZ("+(shadowSide*curve*(isMobile?.22:.55))+"deg)",boxShadow:(shadowSide*curve*(isMobile?18:24))+"px "+(6+curve*10)+"px "+(18+curve*28)+"px rgba(51,34,42,"+(.14+curve*.22)+")",borderRadius:isMobile?"3px "+(6+curve*26)+"px "+(9+curve*34)+"px 3px":dragDir==="next"?"2px "+(4+curve*24)+"px "+(7+curve*35)+"px 2px":(4+curve*24)+"px 2px 2px "+(7+curve*35)+"px"};
+const frontMobileIndex=dragDir==="prev"?target:fromIndex,backMobileIndex=dragDir==="prev"?fromIndex:target;
+const frontPage=isMobile?mobilePages[frontMobileIndex].page:dragDir==="next"?spreads[fromIndex].right:spreads[fromIndex].left;
 const backPage=isMobile?mobilePages[backMobileIndex].page:dragDir==="next"?spreads[target].left:spreads[target].right;
 const frontSide=isMobile?mobilePages[frontMobileIndex].side:dragDir==="next"?"right":"left";
 const backSide=isMobile?mobilePages[backMobileIndex].side:dragDir==="next"?"left":"right";
-const frontIndex=isMobile?mobilePages[frontMobileIndex].spreadIndex:current,backIndex=isMobile?mobilePages[backMobileIndex].spreadIndex:target;
-const frontYear=isMobile?mobilePages[frontMobileIndex].year:spreads[current].year,backYear=isMobile?mobilePages[backMobileIndex].year:spreads[target].year;
-const frontColor=isMobile?mobilePages[frontMobileIndex].color:spreads[current].color,backColor=isMobile?mobilePages[backMobileIndex].color:spreads[target].color;
+const frontPageIndex=isMobile?mobilePages[frontMobileIndex].spreadIndex:fromIndex,backPageIndex=isMobile?mobilePages[backMobileIndex].spreadIndex:target;
+const frontYear=isMobile?mobilePages[frontMobileIndex].year:spreads[fromIndex].year,backYear=isMobile?mobilePages[backMobileIndex].year:spreads[target].year;
+const frontColor=isMobile?mobilePages[frontMobileIndex].color:spreads[fromIndex].color,backColor=isMobile?mobilePages[backMobileIndex].color:spreads[target].color;
 const navItems=isMobile?mobilePages:spreads;
-return <main className={`desk book-${bookState}`}>
+return <main className={"desk book-"+bookState}>
 <div className="desk-stickers" aria-hidden="true"><i>✦</i><i>♡</i><i>毛线部</i><i>わくわく</i><i>🐥</i></div>
-{bookState!=="open"?<OpeningBook state={bookState} onOpen={openBook} isMobile={isMobile}/>:<section className="reader"><div className={`book-shell ${isMobile?"mobile-book-shell":""} ${settling?"is-settling":""} ${dragDir?`turn-${dragDir}`:""}`} ref={bookRef} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
-{dragDir&&target!==current&&(isMobile?<MobilePageView pageIndex={target} className="target-page"/>:<SpreadView spread={spreads[target]} index={target} className="target-spread"/>)}{isMobile?<MobilePageView pageIndex={current} className="active-page"/>:<SpreadView spread={spreads[current]} index={current} className="active-spread"/>}
-{dragDir&&target!==current&&<div className={`turning-leaf leaf-${dragDir}`} style={leafStyle} aria-hidden="true"><div className="leaf-face leaf-front"><JournalPageView page={frontPage} side={frontSide} index={frontIndex} year={frontYear} color={frontColor}/></div><div className="leaf-face leaf-back"><JournalPageView page={backPage} side={backSide} index={backIndex} year={backYear} color={backColor}/></div><span className="paper-curl"/></div>}
-<div className="book-spine"/><button className="cover-tab" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>{setBookState("closed");setCurrent(0)}}>合上 ↗</button><div className="spread-count">{String(current+1).padStart(2,"0")} / {String(total).padStart(2,"0")}</div>
+{bookState!=="open"?<OpeningBook state={bookState} onOpen={openBook} isMobile={isMobile}/>:<section className="reader"><div className={"book-shell "+(isMobile?"mobile-book-shell ":"")+(settling?"is-settling ":"")+(dragDir?"turn-"+dragDir:"")} ref={bookRef} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={pointerUp}>
+{dragDir&&target!==fromIndex&&(isMobile?<MobilePageView pageIndex={target} className="target-page"/>:<SpreadView spread={spreads[target]} index={target} className="target-spread"/>)}{isMobile?<MobilePageView pageIndex={fromIndex} className="active-page"/>:<SpreadView spread={spreads[fromIndex]} index={fromIndex} className="active-spread"/>}
+{dragDir&&target!==fromIndex&&<div className={"turning-leaf leaf-"+dragDir} style={leafStyle} aria-hidden="true"><div className="leaf-face leaf-front"><JournalPageView page={frontPage} side={frontSide} index={frontPageIndex} year={frontYear} color={frontColor}/></div><div className="leaf-face leaf-back"><JournalPageView page={backPage} side={backSide} index={backPageIndex} year={backYear} color={backColor}/></div><span className="paper-curl"/></div>}
+<div className="book-spine"/><button className="cover-tab" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>{setBookState("closed");setCurrent(0);clearTurn()}}>合上 ↗</button><div className="spread-count">{String(current+1).padStart(2,"0")} / {String(total).padStart(2,"0")}</div>
 <button className="page-edge edge-left" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("prev")} disabled={current===0} aria-label="上一页"><i>←</i></button><button className="page-edge edge-right" onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>animateTurn("next")} disabled={current===total-1} aria-label="下一页"><i>→</i></button>
-<nav className="thread-nav" aria-label="手帐页码">{navItems.map((item,index)=><button key={index} className={index===current?"active":""} onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>jump(index)} aria-label={`第${index+1}页`} style={{"--thread":item.color} as React.CSSProperties}/>)}</nav><span className="swipe-note">{isMobile?"向左翻下一页 · 向右回上一页":"抓住页脚拖动 · 左右翻页"}</span>
+<nav className="thread-nav" aria-label="手帐页码">{navItems.map((item,index)=><button key={index} className={index===current?"active":""} onPointerDown={e=>e.stopPropagation()} onPointerUp={e=>e.stopPropagation()} onClick={()=>jump(index)} aria-label={"第"+(index+1)+"页"} style={{"--thread":item.color} as React.CSSProperties}/>)}</nav><span className="swipe-note">{isMobile?"向左翻下一页 · 向右回上一页":"抓住页脚拖动 · 左右翻页"}</span>
 </div></section>}
 </main>;
 }

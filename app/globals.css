@@ -159,3 +159,84 @@ img{display:block;max-width:100%}
 @media(max-width:380px){.book-object,.reader{width:94vw}.mobile-book-shell .journal-page{padding-left:13px;padding-right:13px}.mobile-book-shell .journal-page>h2{font-size:21px}.mobile-book-shell .page-aside{font-size:12.5px}.mobile-book-shell .page-layout-duo p,.mobile-book-shell .page-layout-cascade p{font-size:11.2px}}
 @media(max-height:680px){.book-object,.reader{height:calc(100svh - 24px);max-height:calc(100svh - 24px)}.journal-page{padding-top:43px;padding-bottom:34px}.journal-page>h2{font-size:24px}.page-aside{margin:4px auto;font-size:13px}.work-layout{padding-top:3px;padding-bottom:8px}.work-card p,.page-layout-duo .work-card p,.page-layout-cascade .work-card p{font-size:11.5px}.letter-paper p{margin:5px 0;font-size:12px}.letter-doodle{display:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+/* 2026 collector's edition — quieter desk, stronger paper craft, fewer catalogue pages */
+:root{--ink:#3d3439;--muted:#807477;--paper:#fffdf6;--desk:#e7e1d7;--berry:#8f4960;--line:rgba(113,132,151,.085)}
+.desk{background-color:#e7e1d7;background-image:radial-gradient(circle at 50% 38%,rgba(255,255,255,.92),rgba(255,255,255,.28) 39%,transparent 66%),radial-gradient(rgba(69,54,48,.055) .65px,transparent .75px);background-size:100% 100%,7px 7px}
+.desk:before{left:18%;right:18%;bottom:4%;height:8%;background:rgba(55,40,44,.22);filter:blur(38px);opacity:.44}
+.desk-stickers{display:none}
+.book-object,.reader{filter:drop-shadow(0 28px 30px rgba(47,35,40,.22))}
+.reader{animation:readerSettle .24s ease-out}
+.open-spread{contain:layout;filter:drop-shadow(0 1px 9px rgba(47,34,40,.16))}
+.journal-page{padding-top:56px;border-color:rgba(61,52,57,.42);background-color:#fffdf6;background-image:linear-gradient(rgba(121,145,166,.075) 1px,transparent 1px),radial-gradient(rgba(62,50,45,.045) .6px,transparent .75px);background-size:100% 30px,6px 6px}
+.journal-page:before{content:"";position:absolute;z-index:0;inset:12px;border:1px solid rgba(83,69,75,.065);border-radius:3px;pointer-events:none}
+.year-tab{top:18px;padding:5px 10px;border-color:rgba(61,52,57,.48);border-radius:2px;box-shadow:1.5px 1.5px 0 rgba(61,52,57,.32);color:#312b2f;font-size:9.5px;letter-spacing:.045em}
+.eyebrow{margin-bottom:7px;color:#8f4960;font-family:Georgia,"Times New Roman",serif;font-size:10px;letter-spacing:.16em}
+.journal-page>h2{font-size:clamp(28px,2.35vw,40px);line-height:1.07;letter-spacing:-.045em;text-wrap:balance}
+.page-aside{max-width:84%;margin:7px auto 8px;color:#5f5358;font-size:clamp(15px,1.18vw,19px);line-height:1.38;text-wrap:balance}
+.page-no{color:#92878a;font-size:10px;letter-spacing:.12em}
+.work-layout{gap:12px;padding:8px 10px 17px}
+.work-card{border:1px solid rgba(61,52,57,.22);border-radius:1px;background:rgba(255,255,253,.94);box-shadow:0 1px 0 rgba(255,255,255,.9),3px 5px 12px rgba(60,45,50,.11)}
+.work-card .photo{border-color:rgba(61,52,57,.09);background:#f3efe8}
+.work-card .tape{height:18px;background:rgba(214,154,169,.5);box-shadow:none;mix-blend-mode:multiply}
+.work-meta{color:#8b6974;font-family:Georgia,"Times New Roman",serif;font-size:9px;letter-spacing:.08em}
+.work-card h3{color:#332d31;font-size:clamp(19px,1.55vw,25px);line-height:1.12;letter-spacing:-.025em}
+.work-card p{color:#51474c;font-size:clamp(13.5px,1.05vw,16.5px);line-height:1.42}
+.word-sticker{border-color:rgba(61,52,57,.48);border-radius:3px;background:#ecd081;box-shadow:1.5px 1.5px 0 rgba(61,52,57,.4);font-size:9px;letter-spacing:.02em}
+.page-doodle{bottom:14px;color:#9a6577;font-size:13px}
+.cover-tab{border-color:rgba(61,52,57,.42);border-radius:2px;background:rgba(235,207,214,.9);box-shadow:1px 1px 0 rgba(61,52,57,.36);color:#4e4147}
+.spread-count{background:rgba(255,253,247,.82);color:#756a6d}
+.thread-nav{bottom:11px;gap:7px}.thread-nav button{width:17px;height:5px;border-radius:2px;box-shadow:none;opacity:.66}.thread-nav button.active{width:33px;opacity:1}
+.swipe-note{bottom:24px;color:#776c70;font-size:8.5px;letter-spacing:.1em}
+.page-edge:before{opacity:.72}.page-edge:after{background:linear-gradient(145deg,#fffef9,#ded4c5)}
+.is-settling .turning-leaf{transition:transform .52s cubic-bezier(.2,.66,.24,1),box-shadow .52s ease}
+.turn-next .active-spread .side-left,.turn-prev .active-spread .side-right{visibility:visible!important}
+
+/* Three works are edited as one visual chapter, not three equal cards. */
+.page-layout-triptych .work-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr);align-items:stretch;gap:9px;padding:6px 8px 15px}
+.page-layout-triptych .work-card{width:auto;height:auto;margin:0;overflow:hidden}
+.page-layout-triptych .work-card.card-0{grid-column:1;grid-row:1/3;display:flex;flex-direction:column;transform:rotate(-.7deg)}
+.page-layout-triptych .work-card.card-0 .photo{flex:1 1 auto;height:auto}
+.page-layout-triptych .work-card.card-1,.page-layout-triptych .work-card.card-2{display:grid;grid-template-columns:minmax(0,43%) minmax(0,57%);grid-template-rows:auto auto minmax(0,1fr);column-gap:7px;padding:7px;transform:rotate(.6deg)}
+.page-layout-triptych .work-card.card-2{transform:rotate(-.45deg)}
+.page-layout-triptych .card-1 .photo,.page-layout-triptych .card-2 .photo{grid-column:1;grid-row:1/4;width:100%;height:100%;min-height:0}
+.page-layout-triptych .card-1 .work-meta,.page-layout-triptych .card-1 h3,.page-layout-triptych .card-1 p,.page-layout-triptych .card-2 .work-meta,.page-layout-triptych .card-2 h3,.page-layout-triptych .card-2 p{grid-column:2;min-width:0}
+.page-layout-triptych .card-1 .work-meta,.page-layout-triptych .card-2 .work-meta{grid-row:1;margin-top:0}
+.page-layout-triptych .card-1 h3,.page-layout-triptych .card-2 h3{grid-row:2;margin:1px 0 3px;font-size:clamp(15px,1.12vw,19px)}
+.page-layout-triptych .card-1 p,.page-layout-triptych .card-2 p{grid-row:3;overflow:hidden;font-size:clamp(11px,.82vw,13.5px);line-height:1.28}
+.page-layout-triptych .card-1 .word-sticker,.page-layout-triptych .card-2 .word-sticker{right:3px;top:auto;bottom:3px}
+.page-layout-triptych .card-1 .tape,.page-layout-triptych .card-2 .tape{left:27%;width:54px}
+
+/* A calmer cover: Japanese stationery, not generic candy UI. */
+.cover-front{background-color:#d99eac;background-image:linear-gradient(115deg,rgba(255,255,255,.18),transparent 42%),radial-gradient(rgba(55,43,48,.075) .65px,transparent .72px);background-size:100% 100%,6px 6px;box-shadow:inset 27px 0 0 #819eb7,inset 31px 0 0 #40383c,7px 10px 0 #715865}
+.cover-front:after{border-color:rgba(61,52,57,.3)}
+.small-label{border-color:rgba(61,52,57,.6);background:#f5ead0;box-shadow:1.5px 1.5px 0 rgba(61,52,57,.58);letter-spacing:.12em}
+.cover-front h1{color:#342e32;text-shadow:0 1px rgba(255,255,255,.28)}
+.cover-front h1 em{border-color:#40383c;background:#e5c773;box-shadow:2px 2px 0 #40383c;color:#7c3d53}
+.cover-badge{background:#9bb6cc}.open-label{background:#a8c3b1}
+
+@media(max-width:820px){
+  .book-object,.reader{height:min(88svh,760px)}
+  .mobile-book-shell .journal-page{padding:50px 15px 40px}
+  .mobile-book-shell .journal-page>h2{font-size:clamp(22px,6.2vw,29px)}
+  .mobile-book-shell .page-aside{margin:5px auto 7px;font-size:clamp(12.5px,3.55vw,15px)}
+  .mobile-book-shell .work-card p{font-size:clamp(12px,3.3vw,14px)}
+  .mobile-book-shell .page-layout-triptych .work-layout{display:flex;flex-direction:column;align-items:stretch;gap:5px;padding:4px 5px 11px}
+  .mobile-book-shell .page-layout-triptych .work-card,.mobile-book-shell .page-layout-triptych .work-card.card-0,.mobile-book-shell .page-layout-triptych .work-card.card-1,.mobile-book-shell .page-layout-triptych .work-card.card-2{display:grid;grid-template-columns:minmax(0,42%) minmax(0,58%);grid-template-rows:auto auto minmax(0,1fr);column-gap:6px;flex:1 1 0;width:97%;height:auto;min-height:0;margin:0;padding:6px;transform:rotate(-.35deg)}
+  .mobile-book-shell .page-layout-triptych .work-card.card-1{align-self:flex-end;transform:rotate(.35deg)}
+  .mobile-book-shell .page-layout-triptych .work-card.card-2{transform:rotate(-.2deg)}
+  .mobile-book-shell .page-layout-triptych .photo,.mobile-book-shell .page-layout-triptych .card-0 .photo{grid-column:1;grid-row:1/4;width:100%;height:100%;min-height:0}
+  .mobile-book-shell .page-layout-triptych .work-meta,.mobile-book-shell .page-layout-triptych h3,.mobile-book-shell .page-layout-triptych p{grid-column:2;min-width:0}
+  .mobile-book-shell .page-layout-triptych .work-meta{grid-row:1;margin:0;font-size:8px}
+  .mobile-book-shell .page-layout-triptych h3,.mobile-book-shell .page-layout-triptych .card-0 h3,.mobile-book-shell .page-layout-triptych .card-1 h3,.mobile-book-shell .page-layout-triptych .card-2 h3{grid-row:2;margin:1px 0 2px;font-size:clamp(14px,3.8vw,17px)}
+  .mobile-book-shell .page-layout-triptych p,.mobile-book-shell .page-layout-triptych .card-0 p,.mobile-book-shell .page-layout-triptych .card-1 p,.mobile-book-shell .page-layout-triptych .card-2 p{grid-row:3;overflow:hidden;font-size:clamp(10.5px,2.9vw,12px);line-height:1.25}
+  .mobile-book-shell .page-layout-triptych .word-sticker{right:2px;top:auto;bottom:2px;font-size:7px}
+  .mobile-book-shell .page-layout-triptych .tape{left:22%;width:48px;height:13px;top:-7px}
+  .mobile-book-shell .page-layout-duo .work-card p{font-size:clamp(11.5px,3.1vw,13px)}
+  .mobile-book-shell .year-tab{max-width:58%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:8.5px}
+  .mobile-book-shell .swipe-note{bottom:7px}
+}
+@media(max-width:380px){
+  .mobile-book-shell .journal-page{padding-top:47px;padding-bottom:36px}
+  .mobile-book-shell .page-aside{font-size:12px}
+  .mobile-book-shell .page-layout-triptych p,.mobile-book-shell .page-layout-triptych .card-0 p,.mobile-book-shell .page-layout-triptych .card-1 p,.mobile-book-shell .page-layout-triptych .card-2 p{font-size:10px}
+}
