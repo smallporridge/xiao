@@ -82,7 +82,11 @@ function OpeningBook({state,onOpen,isMobile}:{state:"closed"|"opening";onOpen:()
 return <section className={`book-object ${state} ${isMobile?"mobile-opening":""}`} aria-label="合拢的毛线手帐">
 <div className="opening-pages">{isMobile?<MobilePageView pageIndex={0}/>:<SpreadView spread={spreads[0]} index={0}/>}</div>
 <button className="front-cover" onClick={onOpen} disabled={state==="opening"} aria-label="翻开毛线手帐">
-<div className="cover-face cover-front"><span className="cover-seam"/><span className="cover-yarn" aria-hidden="true"><i/><i/><i/></span><div className="mini-photos" aria-hidden="true"><i><img src="./works/30.webp" alt=""/></i><i><img src="./works/08.webp" alt=""/></i><i><img src="./works/02.webp" alt=""/></i></div><div className="small-label">わたしの HANDMADE JOURNAL</div><h1>我的毛线<br/><em>搞怪手帐</em></h1><p>23件作品 · 14页<br/>把快乐一针一线收进来</p><b className="open-label">轻点封面翻开　↗</b><span className="cover-badge">ENFP<br/>快乐小狗</span></div>
+<div className="cover-face cover-front">
+<img className="cover-art-image" src="./cover-cream-v2.webp" alt="我的毛线搞怪手帐，23件作品，14页"/>
+<span className="cover-art-gloss" aria-hidden="true"/>
+<b className="open-label">轻点封面翻开　↗</b>
+</div>
 <div className="cover-face cover-back" aria-hidden="true"/>
 </button>
 </section>;
